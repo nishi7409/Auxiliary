@@ -1,2 +1,1 @@
-# Auxiliary
-Your friendly clan helper.
+edit this later
