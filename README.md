@@ -14,5 +14,7 @@ stuff
 stuff
 
 
-
-
+### License
+```sh
+MIT
+```
