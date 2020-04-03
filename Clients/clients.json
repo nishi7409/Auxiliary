@@ -5,5 +5,7 @@
 			"groupID": 999999
 		}
 	],
-	"total": 1
+	"total_reviews": 0,
+	"total_donations": 0,
+	"total_clients": 1
 }
