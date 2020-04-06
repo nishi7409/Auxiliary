@@ -1,0 +1,10 @@
+{
+	// prefix for the bot (!ping)
+	"prefix": "!",
+	
+	// bot owner id (used for configuration commands)--for the client's service that's provided by the development team, this is set to the developer's id
+	"owner_id": "114081086065213443",
+
+	// bot's token, grab this from the application's webpage on Discord
+	"bot_token": "token",
+}
