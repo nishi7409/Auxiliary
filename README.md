@@ -1,3 +1,8 @@
+<p align="center">
+  <img width="200" height="200" src="https://media.discordapp.net/attachments/695487678166204468/697751165860970496/LOGO.png?width=200&height=200">
+  temp logo
+</p>
+
 ### General Information
 Finally, a service that doesn't charge its users for something so essential and simple.
 
