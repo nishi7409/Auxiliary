@@ -8,20 +8,16 @@ module.exports = (client, message) => {
 	// Break text into arguments (!poop hi --> !poop = 0 & hi = 1)
 	const args = message.content.split(/[ ]+/);
 
-	/*
-		EDIT THIS BLOCK DOWN
-	*/
-	// Our standard argument/command name definition.
-	const arg_s = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
-	const command = arg_s.shift().toLowerCase();
+	// Our standard command name definition.
+	const command = args[0].substring(1).toLowerCase();
 
 	// Grab the command data from the client.commands Enmap
 	const cmd = client.commands.get(command);
 
 	// If that command doesn't exist, silently exit and do nothing
-	if (!cmd) return;
+	if (!cmd) return undefined;
 
 	// Run the command
-	cmd.run(client, message, arg_s);
+	cmd.run(client, message, args);
 
 };
