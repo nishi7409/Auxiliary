@@ -1,9 +1,13 @@
 {
   "name": "auxiliary",
   "version": "0.0.1",
-  "description": "A Discor-ROBLOX integrated service to allow clans and users to achieve their visions",
+  "description": "A Discord-ROBLOX integrated service to allow clans and users to achieve their visions",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "discord.js": "^12.1.1",
+    "enmap": "^5.2.4",
+    "firebase-admin": "^8.10.0"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "node index.js"
