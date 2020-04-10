@@ -1,39 +1,27 @@
 {
-	// all guild data
 	"guilds":{
 
-		// discord guild id
 		"guild_id":{
-			// premium features (one time payment)
-			"premium": false
 
-			// guild/group information
-			"guild_settings":[
-				// owner of the guild
+			"premium": false,
+
+			"guild_settings":{
 				"owner_id": "123123123",
-				// group id
 				"group_id": 123123,
-				// group name
-				"group_name": "Fetch_group_name" 
-				// total users in the discord server
-				"total_users": 99999,
-			],
+				"group_name": "Fetch_group_name", 
+				"total_users": 99999
+			},
 
-			// role and xp data
-			"role_xp":[
-				// Dynamically create this data upon !config command
+			"role_xp":{
 				"role_set_id_1": 1,
 				"role_set_id_2": 2,
 				"role_set_id_3": 3,
 				"role_set_id_4": 4,
 				"role_set_id_5": 5,
-				"role_set_id_6": 6,
-			],
-			// user data
+				"role_set_id_6": 6
+			},
 			"users":{
-				// username of target
 				"rblx_username":{
-					// user id and xp total					
 					"rblx_id": 1283128,
 					"xp": 59
 				}
@@ -42,27 +30,21 @@
 		}
 	},
 
-	// verified users
 	"verified_users":{
 
-		// discord id
 		"discord_id":{
-			// roblox user id
 			"rblx_id": "123123"
 		}
-	}
+	},
 
-	// whitelisted clan owners
 	"whitelisted":{
 		"discord_id":{
 			"rblx_id": 123123,
-			"status": true;
+			"status": true
 		}
-	}
+	},
 
-	// total clients (this should updated upon creation/deletion of servers)
 	"client_total": 1,
 
-	// total users in the database (under guild's) # increments whenever a new user is added to "users" withitin "guild_id"
 	"total_users": 2
 }

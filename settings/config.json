@@ -3,5 +3,7 @@
 	
 	"owner_id": "114081086065213443",
 
-	"bot_token": "token"
+	"bot_token": "bot token",
+
+	"firebase_url": "fire base url"
 }
