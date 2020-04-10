@@ -1,6 +1,5 @@
 <p align="center">
-  <img width="200" height="200" src="https://media.discordapp.net/attachments/695487678166204468/697751165860970496/LOGO.png?width=200&height=200">
-  temp logo
+  <img width="250" height="250" src="https://media.discordapp.net/attachments/695487678166204468/698118338685173790/logo.png?width=250&height=250">
 </p>
 
 ### General Information
