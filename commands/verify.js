@@ -1,17 +1,23 @@
 const snekfetch = require("snekfetch");
+const admin = require("firebase-admin");
+var serviceAccount = require("../settings/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: client.config.firebase_url
+});
+
+var db = admin.database();
+
 
 exports.run = async (client, message, args) => {
 
 	// if no username is provided, error and delete message
 	if (!args[1]) return message.channel.send(`You must provide me with a ROBLOX username\n**${client.config.prefix}verify ROBLOX**`);
 
-	// if username is provided, check if it's a real username
-
-	// if username is real then ask user to change status to emojis
-
-	// verify
-
-	// success
+	db.ref(`verified_users/${message.author.id}`).set({
+		"rblx_id": Number(123123)
+	});
 
 
 };
