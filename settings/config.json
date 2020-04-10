@@ -5,5 +5,9 @@
 
 	"bot_token": "bot token",
 
-	"firebase_url": "fire base url"
+	"firebase_url": "firebase url",
+
+	"experience_name": "xp"
+
+
 }
