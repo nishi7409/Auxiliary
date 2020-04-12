@@ -1,6 +1,6 @@
 const snekfetch = require("snekfetch");
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, admin) => {
 
 	/*
 		white-list group owners

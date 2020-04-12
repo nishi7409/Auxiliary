@@ -4,9 +4,11 @@
   "description": "A Discord-ROBLOX integrated service to allow clans and users to achieve their visions",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.19.2",
     "discord.js": "^12.1.1",
     "enmap": "^5.2.4",
     "firebase-admin": "^8.10.0",
+    "noblox.js": "^4.5.5",
     "snekfetch": "^4.0.4"
   },
   "devDependencies": {},

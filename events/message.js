@@ -1,4 +1,4 @@
-module.exports = (client, message) => {
+module.exports = (client, message, admin) => {
 	// Ignore bots
 	if (message.author.bot) return undefined;
 

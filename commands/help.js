@@ -1,8 +1,16 @@
-const snekfetch = require("snekfetch");
+const axios = require('axios');
 
 exports.run = async (client, message, args) => {
 
-	var { body } = await snekfetch.get(`${client.config.firebase_url}/.json`);
+
+	var current_number = 0;
+
+	await axios.get(`${client.config.firebase_url}/.json`)
+		.then(function (response) {
+			current_number = response.data.client_total;
+		}).catch(function (error) {
+			console.log(`Error - This should never happen! (help.js)`)
+		})
 
 	await message.channel.send({embed: {
 		// color picker - https://leovoel.github.io/embed-visualizer/
@@ -22,7 +30,7 @@ exports.run = async (client, message, args) => {
 		},
 		{
 			name: "Slots Open",
-			value: `There are only **${100-body.client_total}** out of the 100 possible slots open.\nIf you'd like a slot, [join this server and ping a staff member!](https://www.discord.gg/fHpfmy5)`
+			value: `There are only **${100-current_number}** out of the 100 possible slots open.\nIf you'd like a slot, [join this server and ping a staff member!](https://www.discord.gg/fHpfmy5)`
 		},
 		{
 			name: "Fee ($}",
@@ -49,8 +57,10 @@ exports.run = async (client, message, args) => {
 	}});
 
 
-	message.channel.send("The project's source code can be viewed @ https://github.com/nishi7409/Auxiliary");
-
+	message.author.send("The project's source code can be viewed @ https://github.com/nishi7409/Auxiliary")
+		.catch(function (error) {
+			console.log(`Can't direct message user link to GitHub repository :( (help.js)`)
+		})
 };
 
 exports.info = {

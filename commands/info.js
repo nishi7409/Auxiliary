@@ -1,6 +1,6 @@
 const snekfetch = require("snekfetch");
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, admin) => {
 
 	/*
 		outputs config.client.experience_name (xp) data and rblx stuff

@@ -1,21 +1,18 @@
-/*
-	Load in all packages and configuration files
-*/
+// Load in all packages and configuration files
 const Discord = require("discord.js");
 const Enmap = require("enmap");
 const fs = require("fs");
+
+var serviceAccount = require("./settings/serviceAccountKey.json");
 const config = require("./settings/config.json");
 
-/*
-	Set a variable for the bot (in this instance, client)
-*/
+// Set a variable for the bot (in this instance, client)
 const client = new Discord.Client();
+
 // Implement config to the client so the config is valid everywhere
 client.config = config;
 
-/*
-	Events to be loaded in (message, memebrAdd, etc)
-*/
+// Events to be loaded in (message, memebrAdd, etc)
 fs.readdir("./events/", (err, files) => {
   files.forEach(file => {
     const event = require(`./events/${file}`);
@@ -28,9 +25,7 @@ fs.readdir("./events/", (err, files) => {
 // All valid commands
 client.commands = new Enmap();
 
-/*
-	Commands to be loaded in (ping, verify, etc)
-*/
+// Commands to be loaded in (ping, verify, etc)
 fs.readdir("./commands/", (err, files) => {
   files.forEach(file => {
     if (!file.endsWith(".js")) return;
