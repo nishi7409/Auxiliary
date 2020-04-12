@@ -4,6 +4,8 @@ const { database } = require("../firebase.js");
 
 exports.run = async (client, message, args) => {
 
+	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
+
 	if (!message.member.roles.cache.some(role => role.name === `${client.config.officer_role}`)){
 		return message.channel.send(`Sorry ${message.author}, but only users with the **${client.config.officer_role}** role can run that command!`);
 	};

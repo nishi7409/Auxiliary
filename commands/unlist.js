@@ -1,10 +1,8 @@
-const snekfetch = require("snekfetch");
-
 exports.run = async (client, message, args, admin) => {
 
-	/*
-		unwhitelist group owners
-	*/
+	if (message.author.id !== client.config.owner_id) return message.channel.send(`Sorry ${message.author}, but only the owner of this bot can run that command!`);
+
+
 
 };
 

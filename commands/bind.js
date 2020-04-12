@@ -1,22 +1,8 @@
-const snekfetch = require("snekfetch");
-
 exports.run = async (client, message, args, admin) => {
 
-	/*
-		ONLY OWNER CAN RUN THIS CMD
+	if (message.author.id !== message.guild.owner.id) return message.channel.send(`Sorry ${message.author}, but only the guild owner can the **bind** command!`);
 
-		check if guild owner is whitelisted
-
-		if guild is NOT binded to a group then ask owner to bind
-
-		once binded then take in xp/rolesetid info
-
-		if user doesn't complete on time then cancel entire process and tell owner nothin was saved
-
-
-		if everything is setup then display information (guild bind, guild logo, and roleset id & their xp requirements) 
-
-	*/
+	
 
 };
 

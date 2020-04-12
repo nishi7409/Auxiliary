@@ -1,5 +1,3 @@
-const snekfetch = require("snekfetch");
-
 exports.run = async (client, message, args, admin) => {
 
 	/*

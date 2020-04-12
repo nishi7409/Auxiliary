@@ -1,10 +1,11 @@
-
 exports.run = async (client, message, args, admin) => {
 
 	if (message.author.id !== client.config.owner_id) return message.channel.send(`Sorry ${message.author}, but only the owner of this bot can run that command!`);
 
-	// add user to whitelisted
-	// increment total clients by one
+	// take in file as input
+	// output json
+
+	// push data from json to database
 
 
 };
