@@ -1,6 +1,7 @@
-const axios = require('axios');
-const { database } = require("../firebase.js");
+const axios = require("axios");
+const Discord = require("discord.js");
 
+const { database } = require("../firebase.js");
 
 exports.run = async (client, message, args) => {
 
@@ -49,19 +50,15 @@ exports.run = async (client, message, args) => {
 				mugShot = response.data.Url
 			})
 
-		await message.channel.send({embed: {
-			// color picker - https://leovoel.github.io/embed-visualizer/
-			color: 6160259,
-			arthur: {
-				name: client.user.username,
-				icon_url: client.user.avatarURL
-			},
-			title: "**Verification - Successful**",
-			description: `Hey **${rblx_username}**!\n\nI've retrieved your information from my database.  If you'd like to unlink your ROBLOX account (${rblx_username}) from my database, chat **!unverify** and I'll handle the rest.`,
-			thumbnail: {
-				url: mugShot
-			}
-		}});
+		var doneEmbed = new Discord.MessageEmbed()
+			.setColor(0x21ff7a)
+			.setAuthor(client.user.username)
+			.setURL(client.user.avatarURL)
+			.setTitle("**Verification - Successful**")
+			.setDescription(`Hey **${rblx_username}**!\n\nI've retrieved your information from my database.  If you'd like to unlink your ROBLOX account (${rblx_username}) from my database, chat **!unverify** and I'll handle the rest.`)
+			.setThumbnail(mugShot)
+
+		await message.channel.send(doneEmbed);
 
 		return undefined;
 	}

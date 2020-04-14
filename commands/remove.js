@@ -1,8 +1,17 @@
 const axios = require('axios');
+const Discord = require("discord.js");
+
 const { database } = require("../firebase.js");
 
 
 exports.run = async (client, message, args) => {
+
+
+	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
+
+
+	// MAKE SURE GUILD SETTINGS IS POPULATED
+
 
 	if (!message.member.roles.cache.some(role => role.name === `${client.config.officer_role}`)){
 		return message.channel.send(`Sorry ${message.author}, but only users with the **${client.config.officer_role}** role can run that command!`);
@@ -20,27 +29,43 @@ exports.run = async (client, message, args) => {
 				officer_rblx_id = response.data.rblx_id
 			}
 		}).catch(function (error) {
-			console.log(`Error - ${error} (add.js)`)
+			console.log(`Error - ${error} (remove.js)`)
 		})
 
 	if (flag == false){
-		return message.channel.send(`Sorry ${message.author}, but you must verify yourself with me before you run the **remove** command so I can log your actions!`);
+		var badEmbed = new Discord.MessageEmbed()
+			.setColor(0xf54242)
+			.setDescription(`Sorry ${message.author}, but you must verify yourself with me before you run the **remove** command so I can log your actions!`)
+		return message.channel.send(badEmbed);
 	}
 	
 	if (!args[1] || isNaN(Number(args[1])) || Number(args[1]) < 1 || Number(args[1]) > client.config.max_experiencePoints){
-		return message.channel.send(`Sorry ${message.author}, but you must provide me with a numerical number (between 1 and ${client.config.max_experiencePoints}) for the first argument so I can remove those many ${client.config.experience_name} points from the users you specify\n\n**!remove # username1, username2, etc**`);
+		var badEmbed = new Discord.MessageEmbed()
+			.setColor(0xf54242)
+			.setDescription(`Sorry ${message.author}, but you must provide me with a numerical number (between 1 and ${client.config.max_experiencePoints}) for the first argument so I can remove those many ${client.config.experience_name} points from the users you specify\n\n**!remove # username1, username2, etc**`)
+		return message.channel.send(badEmbed);
 	};
 
 	if (!args[2]){
-		return message.channel.send(`Sorry ${message.author}, but you must provide me with the ROBLOX usernames as to who you'd like me to remove ${args[1]} ${client.config.experience_name} from!\n\n**!remove # username1, username2, etc**`);
+		var badEmbed = new Discord.MessageEmbed()
+			.setColor(0xf54242)
+			.setDescription(`Sorry ${message.author}, but you must provide me with the ROBLOX usernames as to who you'd like me to remove ${args[1]} ${client.config.experience_name} from!\n\n**!add # username1, username2, etc**`)
+		return message.channel.send(badEmbed);
 	};
 
 	var userArray = message.content.slice(message.content.indexOf(message.content.split(" ")[2])).split(',');
+	var group_id;
+
+	await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/guild_settings.json`)
+		.then(function (response) {
+			group_id = response.data.group_id;
+		})
+
 
 	// remove duplicates
 	userArray = Array.from(new Set(userArray));
 
-	var addPoints = Number(args[1]);
+	var removePoints = Number(args[1]);
 
 	message.channel.send(`Working on updating ${userArray.length} user(s)...`);
 
@@ -61,13 +86,16 @@ exports.run = async (client, message, args) => {
 			})
 
 		if (flag){
-			message.channel.send(`User **${rblx_username}** doesn't exist!`);
+			var badEmbed = new Discord.MessageEmbed()
+				.setColor(0xf54242)
+				.setDescription(`User **${rblx_username}** doesn't exist!`)
+			message.channel.send(badEmbed);
 			continue;
 		};
 	
 		var current_points;
 
-		await axios.get(`https://auxiliary-f933f.firebaseio.com/guilds/${message.guild.id}/users/${rblx_id}.json`)
+		await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/users/${rblx_id}.json`)
 			.then(function (response) {
 				if (response.data == null){
 					current_points = 0;
@@ -77,41 +105,45 @@ exports.run = async (client, message, args) => {
 				}
 			})
 
-		var new_total_points = current_points - addPoints;
+		var new_total_points = current_points - removePoints;
 
-		if (new_total_points < 0) new_total_points = 0;
+		if (new_total_points < 0){
+			new_total_points = 0;
+		}
 
 		if (flag){
 			// USER ISN'T IN DATABASE
 
 			// create new dataset for user
+			var doneEmbed = new Discord.MessageEmbed()
+				.setColor(0xFF8C00)
+				.setDescription(`Created ${rblx_username}'s profile`)
+			await message.channel.send(doneEmbed)
 
-			await message.channel.send({embed: {
-				// color picker - https://leovoel.github.io/embed-visualizer/
-				color: 16747520,
-				description: `Created ${rblx_username}'s profile`
-			}});
+			// global audit logs
+			await client.channels.cache.get('699243731043221580').send(`**Group:** ${group_id} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been created! [remove.js]`);
 		}else{
 			// USER IS IN DATABASE
 
 			// update xp count
 
 
-			await message.channel.send({embed: {
-				// color picker - https://leovoel.github.io/embed-visualizer/
-				color: 2684671,
-				description: `Updated ${rblx_username}'s profile`
-			}});
+			// create new dataset for user
+			var doneEmbed = new Discord.MessageEmbed()
+				.setColor(0x28F6FF)
+				.setDescription(`Updated ${rblx_username}'s profile`)
+			await message.channel.send(doneEmbed)
+			
+			// global audit logs
+			await client.channels.cache.get('699243731043221580').send(`**Group:** ${group_id} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been updated! [remove.js]`);
 		}
 
-
-		// check if user can be demoted, if true, CONFETTIESSSS
+		// check if user can be promoted, if true, CONFETTIESSSS
 
 		// send data to log channel if possible
 	}
 
-
-	message.channel.send(`Updated everyone's ${client.config.experience_name} in my database!`);
+	message.channel.send(`Updated everyone's profile!`);
 
 
 
@@ -121,5 +153,5 @@ exports.run = async (client, message, args) => {
 exports.info = {
     name: 'remove',
     usage: 'remove <#> <rblx_username>',
-    description: "remove xp to user's profile"
+    description: "Remove xp from user's profile"
 };

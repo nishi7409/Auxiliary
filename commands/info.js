@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
 
 		var groupID;
 		
-		await axios.get(`https://auxiliary-f933f.firebaseio.com/guilds/${message.guild.id}.json`)
+		await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}.json`)
 			.then(function (response) {
 				if (response.data == null){
 					flag = true
@@ -53,7 +53,7 @@ exports.run = async (client, message, args) => {
 		var rank_name;
 		var roleset_id;
 
-		await axios.get(`https://auxiliary-f933f.firebaseio.com/guilds/${message.guild.id}/users/${rblx_id}`)
+		await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/users/${rblx_id}`)
 			.then(function (response) {
 				if (response.data !== null){
 					xp = response.data.xp;
@@ -81,7 +81,7 @@ exports.run = async (client, message, args) => {
 
 		return message.channel.send(rank_name);
 
-		// we got username, user_id, rank name, rolesetid, xp in total
+		// we got username, user_id, group id, rank name, rolesetid, xp in total
 
 		
 
