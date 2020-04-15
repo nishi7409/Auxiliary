@@ -1,16 +1,21 @@
 const axios = require("axios");
 const Discord = require("discord.js");
 
-exports.run = async (client, message, args, admin) => {
-	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
+exports.run = async (client, message, args) => {
 
+	// command can't be ran in dms
+	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`);
+
+	// only the guild owner can run the command
 	if (message.author.id !== message.guild.owner.id) return message.channel.send(`Sorry ${message.author}, but only the guild owner can the **bind** command!`);
 
+	// boolean checking if owner is verified
 	var verified_status = true;
 
+	// tell owner we're working on things
 	await message.channel.send(`Fetching data...`)
 
-
+	// fetch data
 	await axios.get(`${client.config.firebase_url}/verified_users/${message.author.id}.json`)
 		.then(function (response) {
 			if (response.data == null){
@@ -20,6 +25,7 @@ exports.run = async (client, message, args, admin) => {
 			console.log(`Error - ${error} (add.js)`)
 		});
 
+	// error!
 	if (verified_status == false){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
@@ -27,7 +33,7 @@ exports.run = async (client, message, args, admin) => {
 		return message.channel.send(badEmbed);
 	}
 
-
+	// boolean to see if guild is already setup
 	var setup = true;
 
 	// check if guild is already setup
@@ -38,8 +44,10 @@ exports.run = async (client, message, args, admin) => {
 			}
 		})
 
+	// if guild isn't setup
 	if (setup == false){
 
+		// group id needs to be provided
 		if (!args[1]){
 			var badEmbed = new Discord.MessageEmbed()
 				.setColor(0xf54242)
@@ -47,9 +55,11 @@ exports.run = async (client, message, args, admin) => {
 			return message.channel.send(badEmbed);
 		}
 
+		// grab group id, group name, owner id, and roles (as an array)
 		var groupID;
 		var group_name, owner_id, roles;
 		
+		// fetch data
 		await axios.get(`https://api.roblox.com/groups/${args[1]}`)
 			.then(function (response) {
 				console.log(response.data.Id)
@@ -59,6 +69,7 @@ exports.run = async (client, message, args, admin) => {
 				roles = response.data.Roles;
 			});
 
+		// if still 0 then error
 		if (groupID == 0){
 			var badEmbed = new Discord.MessageEmbed()
 				.setColor(0xf54242)
@@ -67,11 +78,14 @@ exports.run = async (client, message, args, admin) => {
 		}
 
 
+		// role data
 		var previous_number = -2;
 		var numbers = [];
 
 		// got the group id, group name, owner id, and roles
 		for (i = 0; i < roles.length; i++){
+
+			// guest rank
 			if (i == 0){
 				var doneEmbed = new Discord.MessageEmbed()
 					.setColor(0x21ff7a)
@@ -82,6 +96,7 @@ exports.run = async (client, message, args, admin) => {
 				continue;
 			}
 
+			// first rank
 			if (i == roles.length - 1){
 				var doneEmbed = new Discord.MessageEmbed()
 					.setColor(0x21ff7a)
@@ -92,6 +107,7 @@ exports.run = async (client, message, args, admin) => {
 				continue;
 			}
 
+			// other ranks
 			const location = await message.author.send(  {embed: {
 				// color picker - https://leovoel.github.io/embed-visualizer/
 				color: 16747520,
@@ -101,27 +117,40 @@ exports.run = async (client, message, args, admin) => {
 					return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you!`)
 				});
 
+			// collection
 			const timeCollectionThing = {max: 1, time: 30000, errors: ["time"] };
 			const collected = await location.awaitMessages(response => message.author === response.author, timeCollectionThing).catch(() => null);
+
+			// get their answer
 			var responseArray = collected.map(m => m.content);
 
+			// make sure their answer is a number
 			if ((isNaN(Number(responseArray[0])) || Number(responseArray[0] < -1)) || (Number(responseArray[0]) < previous_number && Number(responseArray[0]) !== -1)){
 				return message.author.send(`Sorry ${message.author}, but you didn't provide me with a numerical number greater than 0 (or greater than the previous valid number: ${previous_number})!\n**I've cancelled this setup, please try again!**`);
 			}else{
+
+				// if it's a number then success!
 				var doneEmbed = new Discord.MessageEmbed()
 					.setColor(0x21ff7a)
 					.setDescription(`**:white_check_mark: Rank: ${roles[i].Name} | Required ${client.config.experience_name}: ${Number(responseArray[0])} :white_check_mark: **`)
 
+				// send message to owner
 				await message.author.send(doneEmbed);
 
+				// if number isn't -1 (rank lock) then set to previous number
 				if (Number(responseArray[0]) !== -1){
 					previous_number = responseArray[0];
 				}
+
+				// push number
 				numbers.push(responseArray[0]);
 			}
 		}
 
+		// tell owner that process is complete
 		await message.author.send(`Done!`);
+
+		// send everything to channel where command was initiated
 		var doneEmbed = new Discord.MessageEmbed()
 			.setColor(0x21ff7a)
 			.setTitle(`**${group_name}**`)
@@ -136,6 +165,7 @@ exports.run = async (client, message, args, admin) => {
 			.setColor(0xFF8C00)
 			.setTitle(`**Ranks & ${client.config.experience_name} Requirements**`)
 
+		// add fields representing roles
 		for (i = 0; i < numbers.length; i++){
 			if (numbers[i] == -1){
 				doneEmbed.addField(`**\`${roles[i].Name}\` - \`(${roles[i].Rank})\`**`, `:lock:`, true);
@@ -146,14 +176,16 @@ exports.run = async (client, message, args, admin) => {
 
 		await message.channel.send(doneEmbed)
 
+		// unbind notice (if wanted)
 		return message.channel.send(`**If you plan on changing a setting, you must \`!unbind\` then rebind \`!bind ${args[1]}\`!**`)
 	}else{
+		// guild is already setup, unbind if owner wants to change something
 		return message.channel.send(`This guild is already setup!\nTo change any of the settings, you'll need to unbind (**!unbind**) then rebind (**!bind groupID**).`);
 	}
 };
 
 exports.info = {
-    name: 'verify',
-    usage: 'verify <rblx_username>',
-    description: "Link a user's Discord account with their ROBLOX account"
+    name: 'bind',
+    usage: 'bind <#groupID>',
+    description: "Binds guild with a group"
 };

@@ -5,7 +5,10 @@ const { database } = require("../firebase.js");
 
 exports.run = async (client, message, args) => {
 
+	// boolean to stop this all
 	var flag = false;
+
+	// id of user
 	var rblx_id = 0;
 
 	await axios.get(`${client.config.firebase_url}/verified_users/${message.author.id}.json`)
@@ -20,7 +23,8 @@ exports.run = async (client, message, args) => {
 			console.log(`Error - ${error} (verify.js)`);
 		});
 
-	if (flag){
+	// user doesn't exist
+	if (flag == true){
 		// if no username is provided, error and delete message
 		/*
 		if (!args[1]) return message.channel.send(`You must provide me with a ROBLOX username\n**${client.config.prefix}verify ROBLOX**`);
@@ -37,19 +41,23 @@ exports.run = async (client, message, args) => {
 		message.channel.send("worked");
 	}else{
 
+		// roblox username & profile picture
 		var rblx_username;
 		var mugShot;
 
+		// fetch data to get username
 		await axios.get(`https://users.roblox.com/v1/users/${rblx_id}`)
 			.then(function (response) {
 				rblx_username = response.data.name
 			})
 
+		// fetch data for picture
 		await axios.get(`https://www.roblox.com/headshot-thumbnail/json?userId=${rblx_id}&width=180&height=180`)
 			.then(function (response) {
 				mugShot = response.data.Url
 			})
 
+		// embed creator
 		var doneEmbed = new Discord.MessageEmbed()
 			.setColor(0x21ff7a)
 			.setAuthor(client.user.username)
