@@ -24,7 +24,7 @@ Link - https://discord.gg/fHpfmy5
 
 
 ### Installation
-...
+[The installation guide can be viewed at this link](https://github.com/nishi7409/Auxiliary/wiki)
 
 
 ### License

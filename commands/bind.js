@@ -1,7 +1,10 @@
 const axios = require("axios");
 const Discord = require("discord.js");
+const admin = require("firebase-admin");
 
 exports.run = async (client, message, args) => {
+
+	var db = admin.database();
 
 	// command can't be ran in dms
 	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`);
@@ -11,9 +14,6 @@ exports.run = async (client, message, args) => {
 
 	// boolean checking if owner is verified
 	var verified_status = true;
-
-	// tell owner we're working on things
-	await message.channel.send(`Fetching data...`)
 
 	// fetch data
 	await axios.get(`${client.config.firebase_url}/verified_users/${message.author.id}.json`)
@@ -47,6 +47,7 @@ exports.run = async (client, message, args) => {
 	// if guild isn't setup
 	if (setup == false){
 
+
 		// group id needs to be provided
 		if (!args[1]){
 			var badEmbed = new Discord.MessageEmbed()
@@ -62,7 +63,6 @@ exports.run = async (client, message, args) => {
 		// fetch data
 		await axios.get(`https://api.roblox.com/groups/${args[1]}`)
 			.then(function (response) {
-				console.log(response.data.Id)
 				groupID = Number(args[1]);
 				group_name = response.data.Name
 				owner_id = response.data.Owner.Id
@@ -77,15 +77,18 @@ exports.run = async (client, message, args) => {
 			return message.channel.send(badEmbed);
 		}
 
+		// tell owner we're working on things
+		await message.author.send(`Fetching data...`)
 
 		// role data
 		var previous_number = -2;
 		var numbers = [];
+		var rolesetIDs = []
 
 		// got the group id, group name, owner id, and roles
 		for (i = 0; i < roles.length; i++){
 
-			// guest rank
+			// first rank
 			if (i == 0){
 				var doneEmbed = new Discord.MessageEmbed()
 					.setColor(0x21ff7a)
@@ -93,10 +96,11 @@ exports.run = async (client, message, args) => {
 
 				await message.author.send(doneEmbed);
 				numbers.push(-1);
+				rolesetIDs.push(roles[i].Rank);
 				continue;
 			}
 
-			// first rank
+			// last rank
 			if (i == roles.length - 1){
 				var doneEmbed = new Discord.MessageEmbed()
 					.setColor(0x21ff7a)
@@ -104,6 +108,7 @@ exports.run = async (client, message, args) => {
 
 				await message.author.send(doneEmbed);
 				numbers.push(-1);
+				rolesetIDs.push(roles[i].Rank);
 				continue;
 			}
 
@@ -144,6 +149,7 @@ exports.run = async (client, message, args) => {
 
 				// push number
 				numbers.push(responseArray[0]);
+				rolesetIDs.push(roles[i].Rank);
 			}
 		}
 
@@ -158,7 +164,7 @@ exports.run = async (client, message, args) => {
 			.addField(`Group Name`, `**\`${group_name}\`**`, true)
 			.addField(`Group ID`, `**\`${groupID}\`**`, true)
 			.addField(`Server Owner ID`, `**\`${message.guild.owner.id}\`**`, true)
-		await message.author.send(doneEmbed);
+		await message.channel.send(doneEmbed);
 
 
 		var doneEmbed = new Discord.MessageEmbed()
@@ -168,14 +174,32 @@ exports.run = async (client, message, args) => {
 		// add fields representing roles
 		for (i = 0; i < numbers.length; i++){
 			if (numbers[i] == -1){
-				doneEmbed.addField(`**\`${roles[i].Name}\` - \`(${roles[i].Rank})\`**`, `:lock:`, true);
+				doneEmbed.addField(`**\`${roles[i].Name}\` - \`(${roles[i].Rank})\`**`, `:lock: Locked :lock:`, true);
 			}else{
-				doneEmbed.addField(`**\`${roles[i].Name}\` - \`(${roles[i].Rank})\`**`, `**\`${numbers[i]} ${client.config.experience_name}\`**`, true);
+				doneEmbed.addField(`**\`${roles[i].Name}\` - \`(${roles[i].Rank})\`**`, `**${Number(numbers[i])} ${client.config.experience_name}**`, true);
 			}
 		}
 
 		await message.channel.send(doneEmbed)
 
+
+		// send everything to database now
+		db.ref(`guilds/${message.guild.id}/guild_settings`).set({
+			group_id: Number(groupID),
+			group_name: group_name,
+			owner_id: Number(owner_id),
+			premium: false
+		})
+
+		db.ref(`guilds/${message.guild.id}/users/1569772064`).set({
+			xp: Number(0)
+		})
+		for (index = 0; index < numbers.length; index++){
+			db.ref(`guilds/${message.guild.id}/role_xp/${rolesetIDs[index]}`).set({
+				xp: Number(numbers[index])
+			});
+		}
+		
 		// unbind notice (if wanted)
 		return message.channel.send(`**If you plan on changing a setting, you must \`!unbind\` then rebind \`!bind ${args[1]}\`!**`)
 	}else{

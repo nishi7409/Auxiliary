@@ -1,11 +1,13 @@
 const axios = require('axios');
 const Discord = require("discord.js");
-
-const { database } = require("../firebase.js");
+const admin = require("firebase-admin");
+const rblxFunctions = require("noblox.js");
 
 
 exports.run = async (client, message, args, groupID) => {
 
+	var db = admin.database();
+	
 	// command can only be ran in guild text channels
 	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
 
@@ -39,24 +41,24 @@ exports.run = async (client, message, args, groupID) => {
 	if (flag == false){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`Sorry ${message.author}, but you must verify yourself with me before you run the **add** command so I can log your actions!`)
-		return message.channel.send(badEmbed);
+			.setDescription(`You must verify yourself before you can run the **add** command!`)
+		return message.reply(badEmbed);
 	}
 	
 	// make sure number is a number and is between the specified numberss
 	if (!args[1] || isNaN(Number(args[1])) || Number(args[1]) < 1 || Number(args[1]) > client.config.max_experiencePoints){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`Sorry ${message.author}, but you must provide me with a numerical number (between 1 and ${client.config.max_experiencePoints}) for the first argument so I can add those many ${client.config.experience_name} points to the users you specify\n\n**!add # username1, username2, etc**`)
-		return message.channel.send(badEmbed);
+			.setDescription(`You must specify a number (1-${client.config.max_experiencePoints}) for me to add ${client.config.experience_name} points to the specified users\n\n**!add # username1, username2, etc**`)
+		return message.reply(badEmbed);
 	};
 
 	// if no usernames present, error!
 	if (!args[2]){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`Sorry ${message.author}, but you must provide me with the ROBLOX usernames as to who you'd like me to add ${args[1]} ${client.config.experience_name} to!\n\n**!add # username1, username2, etc**`)
-		return message.channel.send(badEmbed);
+			.setDescription(`Please provide the ROBLOX username that you want to add ${client.config.experience_name} to\n\n**!add # username1, username2, etc**`)
+		return message.reply(badEmbed);
 	};
 
 	// collect usernames into an array
@@ -71,14 +73,22 @@ exports.run = async (client, message, args, groupID) => {
 	// tell user that we're still working on command..
 	message.channel.send(`Working on updating ${userArray.length} user(s)...`);
 
+
+	// all roles
+	var roles;
+	await axios.get(`https://api.roblox.com/groups/${groupID}`)
+		.then(function (response) {
+			roles = response.data.Roles;
+		});
+
+
 	// for loop to go through array
 	for (i = 0; i < userArray.length; i++){
 		// username & id & boolean to get out
 		var rblx_username = userArray[i].trim();
 		var rblx_id;
 		var flag = false;
-
-		// grab id if possible
+			// grab id if possible
 		await axios.get(`https://api.roblox.com/users/get-by-username?username=${rblx_username}`)
 			.then(function (response) {
 				// wow user doesn't exist
@@ -116,11 +126,9 @@ exports.run = async (client, message, args, groupID) => {
 		var new_total_points = current_points + addPoints;
 
 		if (flag){
-			// USER ISN'T IN DATABASE
-			/*CODE THIS*/
-
-			// create new dataset for user
-			/*CODE THIS*/
+			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
+			  xp: Number(new_total_points)
+			});
 
 			// embed message to channel
 			var doneEmbed = new Discord.MessageEmbed()
@@ -131,11 +139,9 @@ exports.run = async (client, message, args, groupID) => {
 			// global audit logs
 			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been created! [add.js]`);
 		}else{
-			// USER IS IN DATABASE
-			/*CODE THIS*/
-
-			// update xp count
-			/*CODE THIS*/
+			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
+			  xp: Number(new_total_points)
+			});
 
 			// embed message to channel
 			var doneEmbed = new Discord.MessageEmbed()
@@ -147,9 +153,65 @@ exports.run = async (client, message, args, groupID) => {
 			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been updated! [add.js]`);
 		}
 
-		// check if user can be promoted, if true, CONFETTIESSSS
 
-		// send data to log channel if possible
+		// user's current roleset id
+		var current_rolesetID;
+
+		// fetch data
+		await axios.get(`https://api.roblox.com/users/${rblx_id}/groups`)
+			.then(function (response) {
+				var flag = false;
+				for (new_i = 0; new_i < response.data.length; new_i++){
+					if (response.data[new_i].Id == groupID){
+						flag = true;
+						current_rolesetID = response.data[new_i].Rank;
+						break;
+					}
+				}
+
+				if (flag == false){
+					roleset_id = 0;
+				}
+			});
+
+
+		// next roleset id
+		var next_rolesetID = 0;
+
+		for (not_i = 0; not_i < roles.length; not_i++){
+			if (roles[not_i].Rank == current_rolesetID && current_rolesetID !== 255){
+				next_rolesetID = roles[not_i+1].Rank;
+				//break;
+			}else if (current_rolesetID == 255){
+				next_rolesetID = -2;
+				//break;
+			}
+		}
+
+
+		if (next_rolesetID > 1){
+			var nextRank_xp;
+
+			// user is not owner or guest
+			await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/role_xp/${next_rolesetID}.json`)
+				.then(function (response) {
+					nextRank_xp = response.data
+				});
+
+
+			if (nextRank_xp !== -1){
+				if (new_total_points >= nextRank_xp){
+					await rblxFunctions.setRank({group: groupID, target: rblx_id, rank: next_rolesetID});
+					var promotionEmbed = new Discord.MessageEmbed()
+						.setColor(0x21ff7a)
+						.setDescription(`**:confetti_ball: ${rblx_username} has been promoted! :confetti_ball:**`)
+
+					await message.channel.send(promotionEmbed);
+
+				}
+			}
+
+		}
 	}
 
 	message.channel.send(`Updated everyone's profile!`);

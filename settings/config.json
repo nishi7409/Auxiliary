@@ -4,7 +4,8 @@
 	"owner_id": "114081086065213443",
 
 	"bot_token": "bot token",
-
+	"rblx_cookie": "roblox cookie",
+	
 	"firebase_url": "https://auxiliary-f933f.firebaseio.com",
 
 	"officer_role": "Officer",

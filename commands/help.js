@@ -7,9 +7,9 @@ exports.run = async (client, message, args) => {
 	var current_number = 0;
 
 	// fetch data
-	await axios.get(`${client.config.firebase_url}/.json`)
+	await axios.get(`${client.config.firebase_url}/default_settings/client_total.json`)
 		.then(function (response) {
-			current_number = response.data.client_total;
+			current_number = response.data;
 		}).catch(function (error) {
 			console.log(`Error - This should never happen! (help.js)`)
 		})

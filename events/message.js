@@ -1,7 +1,7 @@
 const axios = require("axios");
 const Discord = require("discord.js");
 
-module.exports = async (client, message, admin) => {
+module.exports = async (client, message) => {
 	// Ignore bots
 	if (message.author.bot) return undefined;
 
@@ -54,7 +54,7 @@ module.exports = async (client, message, admin) => {
 	}
 
 	// if guild isn't setup and the command isn't to setup ORRRR the owner of the guild isn't whitelisted, ERRORRR
-	if ((guild_setup == false && command !== "bind") || (owner_whitelisted == false)){
+	if (((guild_setup == false && command !== "bind") || (owner_whitelisted == false)) && (message.author.id !== client.config.owner_id)){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`Sorry ${message.author}, but either <@${message.guild.owner.id}> isn't whitelisted or this guild hasn't been setup yet!\nSetup - \`!bind groupID\`\n\n**[If you have any questions, feel free to click here](https://discord.gg/fHpfmy5)**`)

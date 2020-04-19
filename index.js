@@ -1,6 +1,8 @@
 // Load in all packages and configuration files
 const Discord = require("discord.js");
 const Enmap = require("enmap");
+const admin = require("firebase-admin");
+const rblxFunctions = require("noblox.js");
 const fs = require("fs");
 
 var serviceAccount = require("./settings/serviceAccountKey.json");
@@ -12,6 +14,22 @@ const client = new Discord.Client();
 // Implement config to the client so the config is valid everywhere
 client.config = config;
 
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: `${config.firebase_url}`
+});
+
+async function rblx_login(){
+  await rblxFunctions.cookieLogin(config.rblx_cookie);
+  console.log("logged in");
+}
+rblx_login();
+
+
+
+
+
 // Events to be loaded in (message, memebrAdd, etc)
 fs.readdir("./events/", (err, files) => {
   files.forEach(file => {
@@ -20,7 +38,6 @@ fs.readdir("./events/", (err, files) => {
     client.on(eventName, event.bind(null, client));
   });
 });
-
 
 // All valid commands
 client.commands = new Enmap();
