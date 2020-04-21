@@ -127,6 +127,7 @@ exports.run = async (client, message, args, groupID) => {
 		var next_rolesetID = -1;
 		var i_num = 0;
 
+		// loop through all roles looking for next roleset id
 		for (i = 0; i < roles.length; i++){
 			if (roles[i].Rank == roleset_id && roleset_id !== 255){
 				next_rolesetID = roles[i+1].Rank;

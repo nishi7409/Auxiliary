@@ -34,14 +34,14 @@ exports.run = async (client, message, args, groupID) => {
 			}
 		}).catch(function (error) {
 			// error, shouldn't happen tbh
-			console.log(`Error - ${error} (add.js)`)
+			console.log(`Error - ${error} (remove.js)`)
 		})
 
 	// user isn't verified
 	if (flag == false){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`You must verify yourself before you can run the **add** command!`)
+			.setDescription(`You must verify yourself before you can run the **remove** command!`)
 		return message.reply(badEmbed);
 	}
 	
@@ -49,7 +49,7 @@ exports.run = async (client, message, args, groupID) => {
 	if (!args[1] || isNaN(Number(args[1])) || Number(args[1]) < 1 || Number(args[1]) > client.config.max_experiencePoints){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`You must specify a number (1-${client.config.max_experiencePoints}) for me to add ${client.config.experience_name} points to the specified users\n\n**!add # username1, username2, etc**`)
+			.setDescription(`You must specify a number (1-${client.config.max_experiencePoints}) for me to remove ${client.config.experience_name} points from the specified users\n\n**!remove # username1, username2, etc**`)
 		return message.reply(badEmbed);
 	};
 
@@ -57,7 +57,7 @@ exports.run = async (client, message, args, groupID) => {
 	if (!args[2]){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`Please provide the ROBLOX username that you want to add ${client.config.experience_name} to\n\n**!add # username1, username2, etc**`)
+			.setDescription(`Please provide the ROBLOX username that you want to remove ${client.config.experience_name} to\n\n**!remove # username1, username2, etc**`)
 		return message.reply(badEmbed);
 	};
 
@@ -68,7 +68,7 @@ exports.run = async (client, message, args, groupID) => {
 	userArray = Array.from(new Set(userArray));
 
 	// number variable
-	var addPoints = Number(args[1]);
+	var removePoints = Number(args[1]);
 
 	// tell user that we're still working on command..
 	message.channel.send(`Working on updating ${userArray.length} user(s)...`);
@@ -123,7 +123,10 @@ exports.run = async (client, message, args, groupID) => {
 				}
 			})
 
-		var new_total_points = current_points + addPoints;
+		var new_total_points = current_points - removePoints;
+		if (new_total_points < 0) {
+			new_total_points = 0;
+		}
 
 		if (flag){
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
@@ -137,7 +140,7 @@ exports.run = async (client, message, args, groupID) => {
 			await message.channel.send(doneEmbed)
 
 			// global audit logs
-			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been created! [add.js]`);
+			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been created! [remove.js]`);
 		}else{
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
 			  xp: Number(new_total_points)
@@ -150,12 +153,13 @@ exports.run = async (client, message, args, groupID) => {
 			await message.channel.send(doneEmbed)
 			
 			// global audit logs
-			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been updated! [add.js]`);
+			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been updated! [remove.js]`);
 		}
 
 
 		// user's current roleset id
 		var current_rolesetID;
+		var requried_current_rolesetID_XP;
 
 		// fetch data
 		await axios.get(`https://api.roblox.com/users/${rblx_id}/groups`)
@@ -176,35 +180,39 @@ exports.run = async (client, message, args, groupID) => {
 
 
 		// next roleset id
-		var next_rolesetID = 0;
+		var previous_rolesetID = 0;
 
 		for (not_i = 0; not_i < roles.length; not_i++){
 			if (roles[not_i].Rank == current_rolesetID && current_rolesetID !== 255){
-				next_rolesetID = roles[not_i+1].Rank;
+				previous_rolesetID = roles[not_i-1].Rank;
 				//break;
 			}else if (current_rolesetID == 255){
-				next_rolesetID = -2;
+				previous_rolesetID = 0;
 				//break;
 			}
 		}
 
 
-		if (next_rolesetID > 1){
-			var nextRank_xp;
+		if ((previous_rolesetID < current_rolesetID) && (previous_rolesetID !== 0)){
+			var previousRank_xp = -1;
 
 			// user is not owner or guest
-			await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/role_xp/${next_rolesetID}.json`)
+			await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/role_xp/${previous_rolesetID}.json`)
 				.then(function (response) {
-					nextRank_xp = response.data
+					previousRank_xp = response.data
 				});
 
+			await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/role_xp/${current_rolesetID}.json`)
+				.then(function (response) {
+					requried_current_rolesetID_XP = response.data
+				});
 
-			if (nextRank_xp !== -1){
-				if (new_total_points >= nextRank_xp){
-					await rblxFunctions.setRank({group: groupID, target: rblx_id, rank: next_rolesetID});
+			if (previousRank_xp !== -1){
+				if (new_total_points < requried_current_rolesetID_XP){
+					await rblxFunctions.setRank({group: groupID, target: rblx_id, rank: previous_rolesetID});
 					var promotionEmbed = new Discord.MessageEmbed()
 						.setColor(0x21ff7a)
-						.setDescription(`**:confetti_ball: ${rblx_username} has been promoted! :confetti_ball:**`)
+						.setDescription(`**:frowning: ${rblx_username} has been demoted! :frowning:**`)
 
 					await message.channel.send(promotionEmbed);
 
@@ -222,7 +230,7 @@ exports.run = async (client, message, args, groupID) => {
 };
 
 exports.info = {
-    name: 'add',
-    usage: 'add <#> <rblx_username>',
-    description: "Add xp to user's profile"
+    name: 'remove',
+    usage: 'remove <#> <rblx_username>',
+    description: "remove xp to user's profile"
 };

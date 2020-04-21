@@ -39,7 +39,7 @@ exports.run = async (client, message, args) => {
 	// check if guild is already setup
 	await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}.json`)
 		.then(function (response) {
-			if (response.data == null){
+			if (response.data == null || response.data.guild_settings.group_id == -1){
 				setup = false;
 			}
 		})
@@ -166,7 +166,8 @@ exports.run = async (client, message, args) => {
 			.addField(`Server Owner ID`, `**\`${message.guild.owner.id}\`**`, true)
 		await message.channel.send(doneEmbed);
 
-
+		await client.channels.cache.get('699243731043221580').send(doneEmbed);
+		
 		var doneEmbed = new Discord.MessageEmbed()
 			.setColor(0xFF8C00)
 			.setTitle(`**Ranks & ${client.config.experience_name} Requirements**`)

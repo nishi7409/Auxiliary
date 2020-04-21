@@ -7,7 +7,7 @@ const rblxFunctions = require("noblox.js");
 exports.run = async (client, message, args, groupID) => {
 
 	var db = admin.database();
-	
+
 	// command can only be ran in guild text channels
 	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
 
@@ -81,7 +81,6 @@ exports.run = async (client, message, args, groupID) => {
 			roles = response.data.Roles;
 		});
 
-
 	// for loop to go through array
 	for (i = 0; i < userArray.length; i++){
 		// username & id & boolean to get out
@@ -123,8 +122,9 @@ exports.run = async (client, message, args, groupID) => {
 				}
 			})
 
+		// new total points added together
 		var new_total_points = current_points + addPoints;
-
+	
 		if (flag){
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
 			  xp: Number(new_total_points)
@@ -214,11 +214,7 @@ exports.run = async (client, message, args, groupID) => {
 		}
 	}
 
-	message.channel.send(`Updated everyone's profile!`);
-
-
-
-
+	return message.channel.send(`Updated everyone's profile!`);
 };
 
 exports.info = {
