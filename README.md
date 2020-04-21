@@ -19,10 +19,6 @@ If you have any questions or concerns, please feel free to join the support serv
 Link - https://discord.gg/fHpfmy5
 
 
-### Slots
-(100-x) slots of 100 are remaining for free usage!
-
-
 ### Installation
 [The installation guide can be viewed at this link](https://github.com/nishi7409/Auxiliary/wiki)
 
