@@ -22,8 +22,7 @@ exports.run = async (client, message, args) => {
 
 	
 	await client.channels.cache.get('695488449771470848').send(reviewEmbed);
-
-	return undefined;
+	return message.channel.send(`Thanks for posting a review! :thumbsup:`);
 };
 
 exports.info = {

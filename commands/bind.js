@@ -78,7 +78,7 @@ exports.run = async (client, message, args) => {
 		}
 
 		// tell owner we're working on things
-		await message.author.send(`Fetching data...`)
+		await message.channel.send(`Fetching data...`).then(message => message.delete({timeout: 5000, reason: "general delete"}))
 
 		// role data
 		var previous_number = -2;

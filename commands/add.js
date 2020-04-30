@@ -49,7 +49,7 @@ exports.run = async (client, message, args, groupID) => {
 	if (!args[1] || isNaN(Number(args[1])) || Number(args[1]) < 1 || Number(args[1]) > client.config.max_experiencePoints){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`You must specify a number (1-${client.config.max_experiencePoints}) for me to add ${client.config.experience_name} points to the specified users\n\n**!add # username1, username2, etc**`)
+			.setDescription(`You must specify a number (1-${client.config.max_experiencePoints}) for me to add ${client.config.experience_name} points to the specified users\n\n**${client.config.prefix}add # username1, username2, etc**`)
 		return message.reply(badEmbed);
 	};
 
@@ -57,7 +57,7 @@ exports.run = async (client, message, args, groupID) => {
 	if (!args[2]){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
-			.setDescription(`Please provide the ROBLOX username that you want to add ${client.config.experience_name} to\n\n**!add # username1, username2, etc**`)
+			.setDescription(`Please provide the ROBLOX username that you want to add ${client.config.experience_name} to\n\n**${client.config.prefix}add # username1, username2, etc**`)
 		return message.reply(badEmbed);
 	};
 
@@ -71,7 +71,11 @@ exports.run = async (client, message, args, groupID) => {
 	var addPoints = Number(args[1]);
 
 	// tell user that we're still working on command..
-	message.channel.send(`Working on updating ${userArray.length} user(s)...`);
+	var workinEmbed = new Discord.MessageEmbed()
+		.setImage("https://media.tenor.com/images/334cf1e2aa89a90a274f5a4040d1a6ec/tenor.gif")
+		.setDescription(`Working on updating ${userArray.length} user(s)...`)
+
+	await message.channel.send(workinEmbed).then(message => message.delete({ timeout: 4000, reason: "delete workin message" }));
 
 
 	// all roles
@@ -153,64 +157,73 @@ exports.run = async (client, message, args, groupID) => {
 			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been updated! [add.js]`);
 		}
 
+		var flag = true;
 
-		// user's current roleset id
-		var current_rolesetID;
+		while (flag){
+			// user's current roleset id
+			var current_rolesetID;
 
-		// fetch data
-		await axios.get(`https://api.roblox.com/users/${rblx_id}/groups`)
-			.then(function (response) {
-				var flag = false;
-				for (new_i = 0; new_i < response.data.length; new_i++){
-					if (response.data[new_i].Id == groupID){
-						flag = true;
-						current_rolesetID = response.data[new_i].Rank;
-						break;
-					}
-				}
-
-				if (flag == false){
-					roleset_id = 0;
-				}
-			});
-
-
-		// next roleset id
-		var next_rolesetID = 0;
-
-		for (not_i = 0; not_i < roles.length; not_i++){
-			if (roles[not_i].Rank == current_rolesetID && current_rolesetID !== 255){
-				next_rolesetID = roles[not_i+1].Rank;
-				//break;
-			}else if (current_rolesetID == 255){
-				next_rolesetID = -2;
-				//break;
-			}
-		}
-
-
-		if (next_rolesetID > 1){
-			var nextRank_xp;
-
-			// user is not owner or guest
-			await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/role_xp/${next_rolesetID}.json`)
+			// fetch data
+			await axios.get(`https://api.roblox.com/users/${rblx_id}/groups`)
 				.then(function (response) {
-					nextRank_xp = response.data
+					var flag = false;
+					for (new_i = 0; new_i < response.data.length; new_i++) {
+						if (response.data[new_i].Id == groupID) {
+							flag = true;
+							current_rolesetID = response.data[new_i].Rank;
+							break;
+						}
+					}
+
+					if (flag == false) {
+						current_rolesetID = 0;
+					}
 				});
 
 
-			if (nextRank_xp !== -1){
-				if (new_total_points >= nextRank_xp){
-					await rblxFunctions.setRank({group: groupID, target: rblx_id, rank: next_rolesetID});
-					var promotionEmbed = new Discord.MessageEmbed()
-						.setColor(0x21ff7a)
-						.setDescription(`**:confetti_ball: ${rblx_username} has been promoted! :confetti_ball:**`)
+			// next roleset id
+			var next_rolesetID = 0;
+			var next_rolesetName;
 
-					await message.channel.send(promotionEmbed);
-
+			for (not_i = 0; not_i < roles.length; not_i++) {
+				if (roles[not_i].Rank == current_rolesetID && current_rolesetID !== 255) {
+					next_rolesetID = roles[not_i + 1].Rank;
+					next_rolesetName = roles[not_i + 1].Name;
+					break;
+				} else if (current_rolesetID == 255) {
+					next_rolesetID = -2;
+					break;
 				}
 			}
 
+			if (next_rolesetID >= 1) {
+				var nextRank_xp;
+
+				// user is not owner or guest
+				await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/role_xp/${next_rolesetID}.json`)
+					.then(function (response) {
+						nextRank_xp = response.data.xp
+					});
+
+				if (nextRank_xp !== -1) {
+					if (new_total_points >= nextRank_xp) {
+						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: next_rolesetID });
+						var promotionEmbed = new Discord.MessageEmbed()
+							.setColor(0x21ff7a)
+							.setImage("https://media.giphy.com/media/ehhuGD0nByYxO/giphy.gif")
+							.setDescription(`**:confetti_ball: \`${rblx_username}\` has been promoted to \`${next_rolesetName}\`! :confetti_ball:**`)
+
+						await message.channel.send(promotionEmbed).then(message => message.delete({timeout: 2500, reason: "delete annoying promotion image embed"}));
+
+					}else{
+						flag = false;
+					}
+				}else{
+					flag = false;
+				}
+			}else{
+				flag = false;
+			}
 		}
 	}
 

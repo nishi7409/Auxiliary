@@ -132,6 +132,7 @@ exports.run = async (client, message, args) => {
 		// embed creator
 		var doneEmbed = new Discord.MessageEmbed()
 			.setColor(0x21ff7a)
+			.setImage("")
 			.setTitle("**Verification - Successful**")
 			.addField(`Username`, `**\`${rblx_username}\`**`, true)
 			.addField(`ID`, `**\`${rblx_id}\`**`, true)

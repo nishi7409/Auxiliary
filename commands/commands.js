@@ -16,30 +16,37 @@ exports.run = async (client, message, args) => {
 		.catch(() => console.log(`Couldn't react for one of the emojis [commands.js]`));
 
 
-
-	/*// bot owner cmds
+	// bot commander cmds
 	var ownerEmbed = new Discord.MessageEmbed()
 		.setColor(0xFF8C00)
 		.setTitle(`**Bot Owner: Commands**`)
-		.addField(`**List`)
+		.addField(`\`${client.config.prefix}restart\``, `Restarts the bot`)
+		.addField(`\`${client.config.prefix}list <@mention>\``, `Whitelists a user to the database`)
+		.addField(`\`${client.config.prefix}list <@mention>\``, `Whitelists a user to the database`)
 
 	// owner cmds
-	var ownerEmbed = new Discord.MessageEmbed()
+	var serverOwnedEmbed = new Discord.MessageEmbed()
 		.setColor(0xf54242)
 		.setTitle(`**Server Owner: Commands**`)
-		.addField()
+		.addField(`\`${client.config.prefix}bind #\``, `Binds the server with the provided group ID (#)`)
+		.addField(`\`${client.config.prefix}unbind\``, `Unbinds the server from the binded group ID previously set`)
 
 	// officer cmds
 	var ownerEmbed = new Discord.MessageEmbed()
 		.setColor(0x28F6FF)
 		.setTitle(`**${client.config.officer_role}: Commands**`)
-		.addField()
+		.addField(`\`${client.config.prefix}add # username1, username2, etc...\``, `Adds # ${client.config.experience_name} to all profiles of provided usernames`)
+		.addField(`\`${client.config.prefix}remove # username1, username2, etc...\``, `Removes # ${client.config.experience_name} from all profiles of provided usernames`)
 
 	// global cmds
 	var ownerEmbed = new Discord.MessageEmbed()
 		.setColor(0x21ff7a)
 		.setTitle(`**Global: Commands**`)
-		.addField()*/
+		.addField(`\`${client.config.prefix}help\``, `Pulls up information about the bot and sends a link to the repository over direct messages`)
+		.addField(`\`${client.config.prefix}commands\``, `Displays all of the commands`)
+		.addField(`\`${client.config.prefix}invite\``, `Displays a link for users to invite the bot into their servers`)
+		.addField(`\`${client.config.prefix}verify rblx_username\``, `Verifies your ROBLOX account (rblx_username) with your Discord account--simply makes sure you're not a robot`)
+		.addField(`\`${client.config.prefix}view rblx_username\``, `View the profile of the given username (rblx_username)`)
 	return undefined;
 
 };
