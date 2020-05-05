@@ -1,6 +1,6 @@
 # Directories
 node_modules/
 personal_settings/
-settings/serviceAccountKey.json
+commands/config.json
 cookie
-.vscode/launch.json
+settings/serviceAccountKey.json
