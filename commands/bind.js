@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 const admin = require("firebase-admin");
 
 exports.run = async (client, message, args) => {
+
   var db = admin.database();
 
   // command can't be ran in dms
