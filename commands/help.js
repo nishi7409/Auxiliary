@@ -11,7 +11,9 @@ exports.run = async (client, message, args) => {
 		.then(function (response) {
 			current_number = response.data;
 		}).catch(function (error) {
-			console.log(`Error - This should never happen! (help.js)`)
+			console.log(`Error - This should never happen! (help.js)`);
+			message.channel.send(`Error - this should never happen (help.js)`);
+			current_number = 0;
 		})
 
 	// general information

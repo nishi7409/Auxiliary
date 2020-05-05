@@ -22,7 +22,6 @@ exports.run = async (client, message, args) => {
 		.setTitle(`**Bot Owner: Commands**`)
 		.addField(`\`${client.config.prefix}restart\``, `Restarts the bot`)
 		.addField(`\`${client.config.prefix}list <@mention>\``, `Whitelists a user to the database`)
-		.addField(`\`${client.config.prefix}list <@mention>\``, `Whitelists a user to the database`)
 
 	// owner cmds
 	var serverOwnedEmbed = new Discord.MessageEmbed()
