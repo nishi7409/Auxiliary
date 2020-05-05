@@ -166,8 +166,6 @@ exports.run = async (client, message, args) => {
 			.addField(`Server Owner ID`, `**\`${message.guild.owner.id}\`**`, true)
 		await message.channel.send(doneEmbed);
 
-		await client.channels.cache.get('699243731043221580').send(doneEmbed);
-		
 		var doneEmbed = new Discord.MessageEmbed()
 			.setColor(0xFF8C00)
 			.setTitle(`**Ranks & ${client.config.experience_name} Requirements**`)

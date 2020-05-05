@@ -143,8 +143,6 @@ exports.run = async (client, message, args, groupID) => {
 				.setDescription(`Created ${rblx_username}'s profile`)
 			await message.channel.send(doneEmbed)
 
-			// global audit logs
-			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been created! [remove.js]`);
 		} else {
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
 				xp: Number(new_total_points)
@@ -157,7 +155,6 @@ exports.run = async (client, message, args, groupID) => {
 			await message.channel.send(doneEmbed)
 
 			// global audit logs
-			await client.channels.cache.get('699243731043221580').send(`**Group:** ${groupID} | **Guild size:** ${message.guild.memberCount}\n${rblx_username}'s profile has been updated! [remove.js]`);
 		}
 
 		var flag = true;
