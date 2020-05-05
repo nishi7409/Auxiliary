@@ -3,212 +3,154 @@ const Discord = require("discord.js");
 const admin = require("firebase-admin");
 
 exports.run = async (client, message, args) => {
-  if (message.channel.type === "dm")
-    return message.channel.send(
-      `That command can't be used through direct messages!`
-    );
 
-  // boolean to stop this all
-  var flag = false;
+	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
 
-  // id of user
-  var rblx_id = 0;
+	// boolean to stop this all
+	var flag = false;
 
-  await axios
-    .get(
-      `${client.config.firebase_url}/verified_users/${message.author.id}.json`
-    )
-    .then(function (response) {
-      if (response.data == null) {
-        flag = true;
-      } else {
-        rblx_id = response.data.rblx_id;
-        flag = false;
-      }
-    })
-    .catch(function (error) {
-      console.log(`Error - ${error} (verify.js)`);
-    });
+	// id of user
+	var rblx_id = 0;
 
-  var db = admin.database();
+	await axios.get(`${client.config.firebase_url}/verified_users/${message.author.id}.json`)
+		.then(function (response) {
+			if (response.data == null){
+				flag = true;
+			}else{
+				rblx_id = response.data.rblx_id
+				flag = false;
+			}
+		}).catch(function (error) {
+			console.log(`Error - ${error} (verify.js)`);
+		});
 
-  // user doesn't exist
-  if (flag == true) {
-    var rblx_id = 0;
-    var rblx_username;
-    const verificationCode = [
-      "apple",
-      "rain",
-      "dog",
-      "cat",
-      "food",
-      "yum",
-      "pizza",
-      "raindrop",
-      "snow",
-      "birthday",
-      "cake",
-      "burger",
-      "soda",
-      "ice",
-      "no",
-      "yes",
-      "orange",
-      "pear",
-      "plum",
-    ];
+	var db = admin.database();
 
-    await axios
-      .get(`https://api.roblox.com/users/get-by-username?username=${args[1]}`)
-      .then(function (response) {
-        // wow user doesn't exist
-        if (response.data.success == false) {
-          flag = false;
-        } else {
-          // user does exist
-          rblx_username = response.data.Username;
-          rblx_id = response.data.Id;
-        }
-      });
+	// user doesn't exist
+	if (flag == true){
+		var rblx_id = 0;
+		var rblx_username;
+		const verificationCode = ['apple', 'rain', 'dog', 'cat', 'food','yum','pizza','raindrop','snow','birthday','cake','burger','soda','ice','no','yes','orange','pear','plum'];
 
-    if (!args[1] || flag == false) {
-      var badEmbed = new Discord.MessageEmbed()
-        .setColor(0xf54242)
-        .setDescription(
-          `Sorry ${message.author}, can you please provide me with a real ROBLOX username!`
-        );
-      return message.channel.send(badEmbed);
-    }
+		await axios.get(`https://api.roblox.com/users/get-by-username?username=${args[1]}`)
+			.then(function (response) {
+				// wow user doesn't exist
+				if (response.data.success == false){
+					flag = false;
+				}else{
+					// user does exist
+					rblx_username = response.data.Username;
+					rblx_id = response.data.Id;
+				}
+			})
 
-    await message.channel.send(`**Check your DM's!**`);
 
-    var verifyCode = `RBLX-${
-      verificationCode[Math.floor(Math.random() * verificationCode.length)]
-    } ${
-      verificationCode[Math.floor(Math.random() * verificationCode.length)]
-    } ${
-      verificationCode[Math.floor(Math.random() * verificationCode.length)]
-    } ${verificationCode[Math.floor(Math.random() * verificationCode.length)]}`;
+		if (!args[1] || flag == false){
+			var badEmbed = new Discord.MessageEmbed()
+				.setColor(0xf54242)
+				.setDescription(`Sorry ${message.author}, can you please provide me with a real ROBLOX username!`)
+			return message.channel.send(badEmbed);
+		}
 
-    var verifyEmbed = new Discord.MessageEmbed()
-      .setColor(0xff8c00)
-      .setImage("https://media.giphy.com/media/BBzeJCZ5FJ7pe/giphy.gif")
-      .setTitle(`**Verification - Pending**`)
-      .setDescription(
-        `**Pending verification for ${rblx_username}**\n\nPlease navigate to [your feed](https://www.roblox.com/feeds/) and paste in the following code:\`\`\`${verifyCode}\`\`\`\nWhen you're ready to advance to the next step, chat **\`done\`**!`
-      );
+		await message.channel.send(`**Check your DM's!**`);
 
-    const location = await message.author
-      .send(verifyEmbed)
-      .then((msg) => msg.channel)
-      .catch(() => {
-        return message.channel.send(
-          `Sorry ${message.author}, but I couldn't direct message you!`
-        );
-      });
 
-    // collection
-    const timeCollectionThing = { max: 1, time: 300000, errors: ["time"] };
-    const collected = await location
-      .awaitMessages(
-        (response) => message.author === response.author,
-        timeCollectionThing
-      )
-      .catch(() => null);
+		var verifyCode = `RBLX-${verificationCode[Math.floor(Math.random() * verificationCode.length)]} ${verificationCode[Math.floor(Math.random() * verificationCode.length)]} ${verificationCode[Math.floor(Math.random() * verificationCode.length)]} ${verificationCode[Math.floor(Math.random() * verificationCode.length)]}`
 
-    if (!collected) {
-      return message.author.send(
-        `Sorry ${message.author}, but I've waited too long for a response.\n\n**Please try again later when you have sufficient time to verify your ROBLOX account with me.**`
-      );
-    }
+		var verifyEmbed = new Discord.MessageEmbed()
+			.setColor(0xff8c00)
+			.setImage("https://media.giphy.com/media/BBzeJCZ5FJ7pe/giphy.gif")
+			.setTitle(`**Verification - Pending**`)
+			.setDescription(
+				`**Pending verification for ${rblx_username}**\n\nPlease navigate to [your feed](https://www.roblox.com/feeds/) and paste in the following code:\`\`\`${verifyCode}\`\`\`\nWhen you're ready to advance to the next step, chat **\`done\`**!`
+			);
 
-    // get their answer
-    var responseArray = collected.map((m) => m.content);
+		const location = await message.author.send(verifyEmbed)
+			.then(msg => msg.channel).catch(() => {
+				return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you!`)
+			});
 
-    if (responseArray[0].toLowerCase() !== "done") {
-      return message.author.send(
-        `Sorry ${message.author}, but that was an invalid response.\n**Expected: \`done\`**`
-      );
-    }
+		// collection
+		const timeCollectionThing = {max: 1, time: 300000, errors: ["time"] };
+		const collected = await location.awaitMessages(response => message.author === response.author, timeCollectionThing).catch(() => null);
 
-    var valid = false;
-    var userStatus;
-    var mugShot;
+		if (!collected){
+			return message.author.send(`Sorry ${message.author}, but I've waited too long for a response.\n\n**Please try again later when you have sufficient time to verify your ROBLOX account with me.**`)
+		}
 
-    await axios
-      .get(
-        `https://www.roblox.com/users/profile/profileheader-json?userId=${rblx_id}`
-      )
-      .then(function (response) {
-        if (response.data.UserStatus === verifyCode) {
-          valid = true;
-          mugShot = response.data.HeadShotImage.Url;
-        } else {
-          userStatus = response.data.UserStatus;
-        }
-      });
+		// get their answer
+		var responseArray = collected.map(m => m.content);
 
-    if (valid == true) {
-      db.ref(`verified_users/${message.author.id}`).set({
-        rblx_id: Number(rblx_id),
-      });
+		if (responseArray[0].toLowerCase() !== "done"){
+			return message.author.send(`Sorry ${message.author}, but that was an invalid response.\n**Expected: \`done\`**`);
+		}
 
-      var doneEmbed = new Discord.MessageEmbed()
-        .setColor(0x21ff7a)
-        .setImage("https://media.giphy.com/media/Pm9k9S7BO9o1giCcya/giphy.gif")
-        .setTitle("**Verification - Successful**")
-        .setDescription(
-          `Hey **${rblx_username}**!\nI've stored your information into my database, thanks for verifying yourself! :thumbsup:`
-        )
-        .setThumbnail(mugShot);
+		var valid = false;
+		var userStatus;
+		var mugShot;
 
-      return message.author.send(doneEmbed);
-    } else {
-      return message.author.send(
-        `Sorry ${message.author}, but your status did not match the verification code.\n**User's Status:\n\`\`\`${userStatus}\`\`\`\nExpected Status:\n\`\`\`${verifyCode}\`\`\`**`
-      );
-    }
-  } else {
-    // roblox username & profile picture
-    var rblx_username;
-    var mugShot;
+		await axios.get(`https://www.roblox.com/users/profile/profileheader-json?userId=${rblx_id}`)
+			.then(function (response) {
+				if (response.data.UserStatus === verifyCode){
+					valid = true;
+					mugShot = response.data.HeadShotImage.Url;
+				}else{
+					userStatus = response.data.UserStatus;
+				}
+			})
 
-    // fetch data to get username
-    await axios
-      .get(`https://users.roblox.com/v1/users/${rblx_id}`)
-      .then(function (response) {
-        rblx_username = response.data.name;
-      });
+		if (valid == true){
+			db.ref(`verified_users/${message.author.id}`).set({
+				rblx_id: Number(rblx_id)
+			})
 
-    // fetch data for picture
-    await axios
-      .get(
-        `https://www.roblox.com/headshot-thumbnail/json?userId=${rblx_id}&width=180&height=180`
-      )
-      .then(function (response) {
-        mugShot = response.data.Url;
-      });
+			var doneEmbed = new Discord.MessageEmbed()
+				.setColor(0x21ff7a)
+				.setImage("https://media.giphy.com/media/Pm9k9S7BO9o1giCcya/giphy.gif")
+				.setTitle("**Verification - Successful**")
+				.setDescription(
+				`Hey **${rblx_username}**!\nI've stored your information into my database, thanks for verifying yourself! :thumbsup:`
+				)
+				.setThumbnail(mugShot);
 
-    // embed creator
-    var doneEmbed = new Discord.MessageEmbed()
-      .setColor(0x21ff7a)
-      .setImage("https://media.giphy.com/media/TdfyKrN7HGTIY/giphy.gif")
-      .setTitle("**Verification - Successful**")
-      .addField(`Username`, `**\`${rblx_username}\`**`, true)
-      .addField(`ID`, `**\`${rblx_id}\`**`, true)
-      .setThumbnail(mugShot);
+			return message.author.send(doneEmbed);
+		}else{
+			return message.author.send(`Sorry ${message.author}, but your status did not match the verification code.\n**User's Status:\n\`\`\`${userStatus}\`\`\`\nExpected Status:\n\`\`\`${verifyCode}\`\`\`**`);
+		}
+	}else{
 
-    await message.channel
-      .send(doneEmbed)
-      .then((message) =>
-        message.delete({ timeout: 5000, reason: "delete message" })
-      );
-    return message.reply(doneEmbed);
-  }
+		// roblox username & profile picture
+		var rblx_username;
+		var mugShot;
+
+		// fetch data to get username
+		await axios.get(`https://users.roblox.com/v1/users/${rblx_id}`)
+			.then(function (response) {
+				rblx_username = response.data.name
+			})
+
+		// fetch data for picture
+		await axios.get(`https://www.roblox.com/headshot-thumbnail/json?userId=${rblx_id}&width=180&height=180`)
+			.then(function (response) {
+				mugShot = response.data.Url
+			})
+
+		// embed creator
+		var doneEmbed = new Discord.MessageEmbed()
+			.setColor(0x21ff7a)
+			.setImage("https://media.giphy.com/media/TdfyKrN7HGTIY/giphy.gif")
+			.setTitle("**Verification - Successful**")
+			.addField(`Username`, `**\`${rblx_username}\`**`, true)
+			.addField(`ID`, `**\`${rblx_id}\`**`, true)
+			.setThumbnail(mugShot);
+
+		await message.channel.send(doneEmbed).then(message => message.delete({timeout: 5000, reason: "delete message"}));
+		return message.reply(doneEmbed);
+	}
 };
 
 exports.info = {
-  name: "verify",
-  usage: "verify <rblx_username>",
-  description: "Link a user's Discord account with their ROBLOX account",
+    name: 'verify',
+    usage: 'verify <rblx_username>',
+    description: "Link a user's Discord account with their ROBLOX account"
 };
