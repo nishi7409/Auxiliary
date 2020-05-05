@@ -1,3 +1,8 @@
 # Directories
 node_modules/
-personal_settings/commands/config.json
+personal_settings/
+commands/config.json
+commands/config.json
+cookie
+settings/serviceAccountKey.json
+settings/config.json
