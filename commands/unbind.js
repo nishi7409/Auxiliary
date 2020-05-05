@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
 
 		db.ref(`guilds/${message.guild.id}/guild_settings`).set({
 			group_id: Number(-1),
-			group_name: Number(-1),
+			group_name: -1,
 			owner_id: Number(-1),
 			premium: false
 		});

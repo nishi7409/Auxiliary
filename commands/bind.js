@@ -52,7 +52,7 @@ exports.run = async (client, message, args) => {
 		if (!args[1]){
 			var badEmbed = new Discord.MessageEmbed()
 				.setColor(0xf54242)
-				.setDescription(`Sorry ${message.author}, but you must provide me with the group's ID!\n\n**Example - ${client.config.prefix}bind 5940055**`)
+				.setDescription(`Sorry ${message.author}, but you must provide me with the group's ID!\n\n**Example - !bind 5940055**`)
 			return message.channel.send(badEmbed);
 		}
 
@@ -125,10 +125,6 @@ exports.run = async (client, message, args) => {
 			// collection
 			const timeCollectionThing = {max: 1, time: 30000, errors: ["time"] };
 			const collected = await location.awaitMessages(response => message.author === response.author, timeCollectionThing).catch(() => null);
-
-			if (!collected){
-                return message.channel.send(`Sorry ${message.author}, but I've waited too long for a response from you--please try again later!`);
-            }
 
 			// get their answer
 			var responseArray = collected.map(m => m.content);
