@@ -150,6 +150,7 @@ exports.run = async (client, message, args, groupID) => {
 				.setColor(0x28F6FF)
 				.setDescription(`Updated ${rblx_username}'s profile`)
 			await message.channel.send(doneEmbed)
+			
 		}
 
 		var flag = true;
