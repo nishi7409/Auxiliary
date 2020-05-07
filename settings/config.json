@@ -1,15 +1,16 @@
 {
-  "prefix": "!",
+	"prefix": "!",
+	
+	"owner_id": "114081086065213443",
 
-  "owner_id": "114081086065213443",
+	"bot_token": "bot token",
+	"rblx_cookie": "rblx cookie",
+	"firebase_url": "https://auxiliary-f933f.firebaseio.com",
 
-  "bot_token": "bot token",
-  "rblx_cookie": "rblx cookie",
+	"officer_role": "Officer",
 
-  "firebase_url": "https://auxiliary-f933f.firebaseio.com",
+	"experience_name": "XP",
+	"max_experiencePoints": 5
 
-  "officer_role": "Officer",
 
-  "experience_name": "XP",
-  "max_experiencePoints": 5
 }
