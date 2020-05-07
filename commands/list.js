@@ -89,6 +89,6 @@ exports.run = async (client, message, args) => {
 
 exports.info = {
     name: 'list',
-    usage: 'lisit <@mention>',
+    usage: 'list <@mention>',
     description: "Whitelists (guild) owners to use the service in their guild"
 };

@@ -38,7 +38,7 @@ exports.run = async (client, message, args, groupID) => {
 
 	// need username
 	if (!args[1]){
-		return message.channel.send(`Sorry ${message.author}, but you need to provide me with a ROBLOX username!\n\n**!view roblox**`);
+		return message.channel.send(`Sorry ${message.author}, but you need to provide me with a ROBLOX username!\n\n**!info roblox**`);
 	}
 
 	// variables for username and id
@@ -63,7 +63,7 @@ exports.run = async (client, message, args, groupID) => {
 		return message.channel.send(`User **${args[1]}** doesn't exist!`);
 	}else{
 
-		await message.channel.send(`Fetching data...`).then(message => message.delete({ timeout: 5000, reason: "general delete" }))
+		await message.channel.send("Fetching information...");
 
 		// get data about user
 		var current_xp = 0;
@@ -142,17 +142,12 @@ exports.run = async (client, message, args, groupID) => {
 		// get data for next rank
 		var nextRank_name, nextRank_xp;
 
-
-
-		if (next_rolesetID >= 1){
+		if (next_rolesetID > 1){
 			// user is not owner or guest
 			await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/role_xp/${next_rolesetID}.json`)
 				.then(function (response) {
-					nextRank_xp = response.data.xp
+					nextRank_xp = response.data
 				});
-
-			console.log(nextRank_xp);
-
 
 		// if rank lock then 0
 		if (nextRank_xp == -1){
@@ -184,18 +179,14 @@ exports.run = async (client, message, args, groupID) => {
 		// math to find how much more needed
 		var remainingXP = nextRank_xp - current_xp;
 
-		var percentage;
-
 		// if negative then 0
 		if (remainingXP < 0){
 			remainingXP = 0;
-			percentage = 100;
-		}else{
-			percentage = Math.round(((Number(current_xp)) / Number(nextRank_xp)) * 100);
 		}
 
 		// three *rows* of what the embed will be featuring
 		var topHeader = `**\`${rank_name}\`** - Currently has **\`${current_xp}\` ${client.config.experience_name}**`
+		var percentage = Math.round(((Number(current_xp))/Number(nextRank_xp)) * 100);
 		var progress_bar = progressBar(percentage);
 
 		// infinity, so set percentage to 100
