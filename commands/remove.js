@@ -42,7 +42,7 @@ exports.run = async (client, message, args, groupID) => {
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`You must verify yourself before you can run the **add** command!`)
-		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"})).then(message => message.delete({timeout: 5000, reason: "delete"}));
+		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}))
 	}
 
 	// make sure number is a number and is between the specified numberss
