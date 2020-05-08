@@ -61,7 +61,7 @@ exports.run = async (client, message, args) => {
         .setTitle(`__Top 5 Users__`)
         .setDescription(`${leaderboard_description}`)
         
-    return message.reply(leaderboardEmbed);
+    return message.reply(leaderboardEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
 
 };
 

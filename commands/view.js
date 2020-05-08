@@ -38,7 +38,7 @@ exports.run = async (client, message, args, groupID) => {
 
 	// need username
 	if (!args[1]){
-		return message.channel.send(`Sorry ${message.author}, but you need to provide me with a ROBLOX username!\n\n**!info roblox**`);
+		return message.channel.send(`Sorry ${message.author}, but you need to provide me with a ROBLOX username!\n\n**!info roblox**`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}
 
 	// variables for username and id
@@ -60,7 +60,7 @@ exports.run = async (client, message, args, groupID) => {
 
 	// does user exist?
 	if (flag){
-		return message.channel.send(`User **${args[1]}** doesn't exist!`);
+		return message.channel.send(`User **${args[1]}** doesn't exist!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}else{
 
 		await message.channel.send("Fetching information...");
@@ -113,7 +113,7 @@ exports.run = async (client, message, args, groupID) => {
 
 		// error, why?  bc stupid error!
 		if (error == true){
-			return message.channel.send(`This error should **never** appear.  Please contact a staff member @ https://discord.gg/fHpfmy5 ASAP (info.js)`)
+			return message.channel.send(`This error should **never** appear.  Please contact a staff member @ https://discord.gg/fHpfmy5 ASAP (info.js)`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 		}
 
 		// all roles
@@ -206,7 +206,7 @@ exports.run = async (client, message, args, groupID) => {
 			.setThumbnail(mugShot)
 
 		// return embed
-		return message.channel.send(infoEmbed);
+		return message.channel.send(infoEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}
 };
 

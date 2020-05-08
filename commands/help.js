@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
 		.addField(`Supporting Servers`, `${client.guilds.cache.size}`, true)
 		.addField(`Supporting Users`, `${client.users.cache.size}`, true)
 		.addField(`Memory Usage`, `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`, true)
-	await message.channel.send(firstEmbed);
+	await message.channel.send(firstEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));;
 
 
 	// support guild
@@ -36,7 +36,7 @@ exports.run = async (client, message, args) => {
 		.setColor(0xf54242)
 		.setTitle(`__**Support**__`)
 		.setDescription(`[If you need any help, please join this server.](https://www.discord.gg/fHpfmy5)`)
-	await message.channel.send(secondEmbed);
+	await message.channel.send(secondEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));;
 
 
 	// commands
@@ -44,7 +44,7 @@ exports.run = async (client, message, args) => {
 		.setColor(0xFF8C00)
 		.setTitle(`__**Commands**__`)
 		.setDescription(`**\`!commands\`**`)
-	await message.channel.send(thirdEmbed);
+	await message.channel.send(thirdEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));;
 
 
 	// github

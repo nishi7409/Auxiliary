@@ -13,7 +13,7 @@ exports.run = async (client, message, args, groupID) => {
 
 	// only users with the specified officer role can run the command
 	if (!message.member.roles.cache.some(role => role.name === `${client.config.officer_role}`)){
-		return message.channel.send(`Sorry ${message.author}, but only users with the **${client.config.officer_role}** role can run that command!`);
+		return message.channel.send(`Sorry ${message.author}, but only users with the **${client.config.officer_role}** role can run that command!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	};
 
 	// officer id
@@ -42,7 +42,7 @@ exports.run = async (client, message, args, groupID) => {
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`You must verify yourself before you can run the **add** command!`)
-		return message.reply(badEmbed);
+		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}
 	
 	// make sure number is a number and is between the specified numberss
@@ -50,7 +50,7 @@ exports.run = async (client, message, args, groupID) => {
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`You must specify a number (1-${client.config.max_experiencePoints}) for me to add ${client.config.experience_name} points to the specified users\n\n**${client.config.prefix}add # username1, username2, etc**`)
-		return message.reply(badEmbed);
+		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));;
 	};
 
 	// if no usernames present, error!
@@ -58,7 +58,7 @@ exports.run = async (client, message, args, groupID) => {
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`Please provide the ROBLOX username that you want to add ${client.config.experience_name} to\n\n**${client.config.prefix}add # username1, username2, etc**`)
-		return message.reply(badEmbed);
+		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));;
 	};
 
 	// collect usernames into an array
@@ -223,7 +223,7 @@ exports.run = async (client, message, args, groupID) => {
 		}
 	}
 
-	return message.channel.send(`Updated everyone's profile!`);
+	return message.channel.send(`Updated everyone's profile!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 };
 
 exports.info = {

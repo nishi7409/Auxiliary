@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`Sorry ${message.author}, but you must verify yourself before you bind this guild with a group!`)
-		return message.channel.send(badEmbed);
+		return message.channel.send(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}
 
 	// boolean to see if guild is already setup
@@ -53,7 +53,7 @@ exports.run = async (client, message, args) => {
 			var badEmbed = new Discord.MessageEmbed()
 				.setColor(0xf54242)
 				.setDescription(`Sorry ${message.author}, but you must provide me with the group's ID!\n\n**Example - ${client.config.prefix}bind 5940055**`)
-			return message.channel.send(badEmbed);
+			return message.channel.send(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
 		}
 
 		// grab group id, group name, owner id, and roles (as an array)
@@ -74,7 +74,7 @@ exports.run = async (client, message, args) => {
 			var badEmbed = new Discord.MessageEmbed()
 				.setColor(0xf54242)
 				.setDescription(`Sorry ${message.author}, but that wasn't a valid group ID!`)
-			return message.channel.send(badEmbed);
+			return message.channel.send(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
 		}
 
 		// tell owner we're working on things
@@ -119,7 +119,7 @@ exports.run = async (client, message, args) => {
 				description: `How many ${client.config.experience_name} points should be required to achieve the rank of **\`${roles[i].Name}\`** (roleset id: ${roles[i].Rank})?\n\n**If you'd like this rank to not be reachable through ${client.config.experience_name} points, chat \`-1\`**`,
 			}})
 				.then(msg => msg.channel).catch(() => {
-					return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you!`)
+					return message.channel.send(`Sorry ${message.author}, but I couldn't direct message you!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 				});
 
 			// collection
@@ -127,7 +127,7 @@ exports.run = async (client, message, args) => {
 			const collected = await location.awaitMessages(response => message.author === response.author, timeCollectionThing).catch(() => null);
 
 			if (!collected){
-                return message.channel.send(`Sorry ${message.author}, but I've waited too long for a response from you--please try again later!`);
+                return message.channel.send(`Sorry ${message.author}, but I've waited too long for a response from you--please try again later!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
             }
 
 			// get their answer
@@ -135,7 +135,7 @@ exports.run = async (client, message, args) => {
 
 			// make sure their answer is a number
 			if ((isNaN(Number(responseArray[0])) || Number(responseArray[0] < -1)) || (Number(responseArray[0]) < previous_number && Number(responseArray[0]) !== -1)){
-				return message.author.send(`Sorry ${message.author}, but you didn't provide me with a numerical number greater than 0 (or greater than the previous valid number: ${previous_number})!\n**I've cancelled this setup, please try again!**`);
+				return message.author.send(`Sorry ${message.author}, but you didn't provide me with a numerical number greater than 0 (or greater than the previous valid number: ${previous_number})!\n**I've cancelled this setup, please try again!**`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 			}else{
 
 				// if it's a number then success!
@@ -204,10 +204,10 @@ exports.run = async (client, message, args) => {
 		}
 		
 		// unbind notice (if wanted)
-		return message.channel.send(`**If you plan on changing a setting, you must \`!unbind\` then rebind \`!bind ${args[1]}\`!**`)
+		return message.channel.send(`**If you plan on changing a setting, you must \`!unbind\` then rebind \`!bind ${args[1]}\`!**`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}else{
 		// guild is already setup, unbind if owner wants to change something
-		return message.channel.send(`This guild is already setup!\nTo change any of the settings, you'll need to unbind (**!unbind**) then rebind (**!bind groupID**).`);
+		return message.channel.send(`This guild is already setup!\nTo change any of the settings, you'll need to unbind (**!unbind**) then rebind (**!bind groupID**).`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}
 };
 

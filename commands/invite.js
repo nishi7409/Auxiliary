@@ -16,3 +16,4 @@ exports.info = {
     usage: 'invite',
     description: "Invite the bot to your server"
 };
+

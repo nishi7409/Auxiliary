@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 
 exports.run = async (client, message, args) => {
 
-	if (message.author.id !== client.config.owner_id) return message.channel.send(`Sorry ${message.author}, but only the owner of this bot can run that command!`);
+	if (message.author.id !== client.config.owner_id) return message.channel.send(`Sorry ${message.author}, but only the owner of this bot can run that command!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 
 	var discord_user_id = args[1].substring(3, args[1].length -1);
 	var in_db = true;
@@ -47,7 +47,7 @@ exports.run = async (client, message, args) => {
 				})
 
 			if (verifiedStatus == false){
-				return message.channel.send(`<@${discord_user_id}> **must** verify themself first before the user can be whitelisted!`);
+				return message.channel.send(`<@${discord_user_id}> **must** verify themself first before the user can be whitelisted!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 			}
 
 			await axios.get(`${client.config.firebase_url}/default_settings/client_total.json`)
@@ -80,10 +80,10 @@ exports.run = async (client, message, args) => {
 				client_total: Number(total_clients+1)
 			});
 			
-			return message.channel.send(`Re-whitelisted <@${discord_user_id}>!`)
+			return message.channel.send(`Re-whitelisted <@${discord_user_id}>!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 		}
 	}else{
-		return message.channel.send(`<@${discord_user_id}> is already whitelisted!\n**<https://www.roblox.com/users/${rblxID}/profile>**`);
+		return message.channel.send(`<@${discord_user_id}> is already whitelisted!\n**<https://www.roblox.com/users/${rblxID}/profile>**`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}
 };
 
