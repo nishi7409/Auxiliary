@@ -19,7 +19,7 @@ exports.run = async (client, message, args) => {
     let leaderboard_unsorted = new Map();
 
     // map insertion
-    await axios.get(`https://auxiliary-f933f.firebaseio.com/guilds/${message.guild.id}/users.json`)
+    await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/users.json`)
         .then(function (response){
             for (var key in response.data){
                 if (response.data.hasOwnProperty(key)){
@@ -33,7 +33,7 @@ exports.run = async (client, message, args) => {
     var leaderboard_sorted = new Map([... leaderboard_unsorted.entries()].sort((a, b) => b[1] - a[1]));
 
     // group information part 1 (gets the group name, group id)
-    await axios.get(`https://auxiliary-f933f.firebaseio.com/guilds/${message.guild.id}.json`)
+    await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}.json`)
         .then(function (response){
             group_name = response.data.guild_settings.group_name;
             group_id = response.data.guild_settings.group_id;

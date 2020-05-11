@@ -4,3 +4,4 @@ personal_settings/
 commands/config.json
 cookie
 settings/serviceAccountKey.json
+commands/api.js
