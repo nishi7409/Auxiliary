@@ -25,27 +25,22 @@ exports.run = async (client, message, args) => {
 		.addField(
 		`\`${client.config.prefix}list <@mention>\``,
 		`Whitelists a user to the database`
-		);
+		)
 
 	// owner cmds
 	var serverOwnedEmbed = new Discord.MessageEmbed()
 		.setColor(0xf54242)
 		.setTitle(`**Server Owner: Commands**`)
-		.addField(
-		`\`${client.config.prefix}bind #\``,
-		`Binds the server with the provided group ID (#)`
-		)
-		.addField(
-		`\`${client.config.prefix}unbind\``,
-		`Unbinds the server from the binded group ID previously set`
-		);
+		.addField(`\`${client.config.prefix}bind #\``, `Binds the server with the provided group ID (#)`)
+		.addField(`\`${client.config.prefix}unbind\``, `Unbinds the server from the binded group ID previously set`)
+		.addField(`\`${client.config.prefix}set # username1, username2, etc...\``, `Set # ${client.config.experience_name} for all profiles of provided usernames `)
 
 	// officer cmds
 	var officerEmbed = new Discord.MessageEmbed()
 		.setColor(0x28F6FF)
 		.setTitle(`**${client.config.officer_role}: Commands**`)
 		.addField(`\`${client.config.prefix}add # username1, username2, etc...\``, `Adds # ${client.config.experience_name} to all profiles of provided usernames`)
-		.addField(`\`${client.config.prefix}remove # username1, username2, etc...\``, `Removes # ${client.config.experience_name} from all profiles of provided usernames`);
+		.addField(`\`${client.config.prefix}remove # username1, username2, etc...\``, `Removes # ${client.config.experience_name} from all profiles of provided usernames`)
 
 	// global cmds
 	var globalEmbed = new Discord.MessageEmbed()
@@ -55,13 +50,14 @@ exports.run = async (client, message, args) => {
 		.addField(`\`${client.config.prefix}commands\``, `Displays all of the commands`)
 		.addField(`\`${client.config.prefix}invite\``, `Displays a link for users to invite the bot into their servers`)
 		.addField(`\`${client.config.prefix}verify rblx_username\``, `Verifies your ROBLOX account (rblx_username) with your Discord account--simply makes sure you're not a robot`)
-		.addField(`\`${client.config.prefix}view rblx_username\``, `View the profile of the given username (rblx_username)`);
+		.addField(`\`${client.config.prefix}view rblx_username\``, `View the profile of the given username (rblx_username)`)
+		.addField(`\`${client.config.prefix}ranks\``, `View the XP requirements for all ranks found in the binded group`)
 
 	if (message.author.id === client.config.owner_id){
-		await message.channel.send(ownerEmbed);
+		await message.channel.send(ownerEmbed)
 	}
 
-	await message.author.send(serverOwnedEmbed);
+	await message.author.send(serverOwnedEmbed)
 	await message.author.send(officerEmbed);
 	return message.author.send(globalEmbed);
 
