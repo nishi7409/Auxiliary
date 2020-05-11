@@ -12,7 +12,7 @@ exports.run = async (client, message, args, groupID) => {
 	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
 
 	// only the guild owner can run this command
-	if (message.owner.id !== message.guild.owner.id) return message.channel.send(`Sorry ${message.authro}, but only the guild owner can run that command`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+	if (message.author.id !== message.guild.owner.id) return message.channel.send(`Sorry ${message.authro}, but only the guild owner can run that command`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 
 	// officer id
 	var officer_rblx_id;
