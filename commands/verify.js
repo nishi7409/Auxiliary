@@ -5,6 +5,18 @@ const admin = require("firebase-admin");
 exports.run = async (client, message, args) => {
 
 	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+	
+	if (message.content.includes("@everyone")) {
+    return message.channel.send(
+      `Nobody likes people who abuse loopholes, <@${message.author.id}>.`
+      );
+    };
+
+	if (message.content.includes("@here")) {
+    return message.channel.send(`
+    Nobody likes people who abuse loopholes, <@${message.author.id}>.`
+    );
+  };
 
 	// boolean to stop this all
 	var flag = false;
