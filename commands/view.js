@@ -49,7 +49,19 @@ exports.run = async (client, message, args, groupID) => {
     return message.channel.send(
       `Sorry ${message.author}, but you need to provide me with a ROBLOX username!\n\n**!view roblox**`
     );
-  }
+  };
+  
+  if (message.content.includes("@everyone")) {
+    return message.channel.send(
+      `Nobody likes people who abuse loopholes, <@${message.author.id}>.`
+      );
+    };
+
+	if (message.content.includes("@here")) {
+    return message.channel.send(`
+    Nobody likes people who abuse loopholes, <@${message.author.id}>.`
+    );
+  };
 
   // variables for username and id
   var rblx_id, rblx_username;
