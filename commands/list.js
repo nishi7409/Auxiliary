@@ -4,6 +4,9 @@ const admin = require("firebase-admin");
 exports.run = async (client, message, args) => {
 
 	if (message.author.id !== client.config.owner_id) return message.channel.send(`Sorry ${message.author}, but only the owner of this bot can run that command!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+	
+	if (message.content.includes("@everyone")) {return message.channel.send(`Nobody likes people who abuse loopholes, <@${message.author.id}>.`);};
+	if (message.content.includes("@here")) {return message.channel.send(`Nobody likes people who abuse loopholes, <@${message.author.id}>.`);};
 
 	var discord_user_id = args[1].substring(3, args[1].length -1);
 	var in_db = true;
