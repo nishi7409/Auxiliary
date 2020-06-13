@@ -209,7 +209,7 @@ exports.run = async (client, message, args, groupID) => {
 							.setImage("https://media.giphy.com/media/ehhuGD0nByYxO/giphy.gif")
 							.setDescription(`**:confetti_ball: \`${rblx_username}\` has been promoted to \`${next_rolesetName}\`! :confetti_ball:**`)
 
-						await message.channel.send(promotionEmbed).then(message => message.delete({timeout: 2500, reason: "delete annoying promotion image embed"}));
+						await message.channel.send(promotionEmbed)
 
 					}else{
 						flag = false;
@@ -223,7 +223,7 @@ exports.run = async (client, message, args, groupID) => {
 		}
 	}
 
-	return message.channel.send(`Updated everyone's profile!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+	return message.channel.send(`Updated everyone's profile!`)
 };
 
 exports.info = {

@@ -98,7 +98,6 @@ exports.run = async (client, message, args) => {
 					userStatus = response.data.UserStatus;
 				}
 			})
-
 		if (valid == true){
 			db.ref(`verified_users/${message.author.id}`).set({
 				rblx_id: Number(rblx_id)
@@ -113,9 +112,9 @@ exports.run = async (client, message, args) => {
 				)
 				.setThumbnail(mugShot);
 
-			return message.author.send(doneEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
+			return message.author.send(doneEmbed)
 		}else{
-			return message.author.send(`Sorry ${message.author}, but your status did not match the verification code.\n**User's Status:\n\`\`\`${userStatus}\`\`\`\nExpected Status:\n\`\`\`${verifyCode}\`\`\`**`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+			return message.author.send(`Sorry ${message.author}, but your status did not match the verification code.\n**User's Status:\n\`\`\`${userStatus}\`\`\`\nExpected Status:\n\`\`\`${verifyCode}\`\`\`**`)
 		}
 	}else{
 
@@ -144,8 +143,7 @@ exports.run = async (client, message, args) => {
 			.addField(`ID`, `**\`${rblx_id}\`**`, true)
 			.setThumbnail(mugShot);
 
-		await message.channel.send(doneEmbed).then(message => message.delete({timeout: 5000, reason: "delete message"}));
-		return message.reply(doneEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
+		return await message.channel.send(doneEmbed)
 	}
 };
 
