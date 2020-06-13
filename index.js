@@ -21,7 +21,8 @@ admin.initializeApp({
 });
 
 async function rblx_login(){
-  await rblxFunctions.cookieLogin(config.rblx_cookie);
+  await rblxFunctions.setCookie(config.rblx_cookie)
+  //await rblxFunctions.cookieLogin(config.rblx_cookie);
   console.log("logged in");
 }
 rblx_login();
