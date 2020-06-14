@@ -45,10 +45,23 @@ function progressBar(percentAge) {
 
 exports.run = async (client, message, args, groupID) => {
   // need username
+  var usernameArgument = args[1]
+  
   if (!args[1]) {
-    return message.channel.send(
-      `Sorry ${message.author}, but you need to provide me with a ROBLOX username!\n\n**!view roblox**`
-    );
+
+   // fetch roblox account instead via Rover database
+   await axios
+    .get(`https://verify.eryn.io/api/user/` + message.author.id)
+    .then(function (response) {
+      if (response.data.status == "ok") {
+        usernameArgument = response.data.robloxUsername
+      } else {
+        // Handles errors in the event that the rover database goes offline or they are not verified. Will look for a better method of handling in the future.
+        return message.channel.send(
+             `Sorry ${message.author}, but you do not seem to be verified in the rover database so that I can fetch your account. Please verify here: https://verify.eryn.io/`
+           );
+      }
+    });
   }
 
   // variables for username and id
@@ -59,7 +72,7 @@ exports.run = async (client, message, args, groupID) => {
 
   // fetch data
   await axios
-    .get(`https://api.roblox.com/users/get-by-username?username=${args[1]}`)
+    .get(`https://api.roblox.com/users/get-by-username?username=${usernameArgument}`)
     .then(function (response) {
       if (response.data.success == false) {
         flag = true;

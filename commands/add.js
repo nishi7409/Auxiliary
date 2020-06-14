@@ -50,7 +50,7 @@ exports.run = async (client, message, args, groupID) => {
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`You must specify a number (1-${client.config.max_experiencePoints}) for me to add ${client.config.experience_name} points to the specified users\n\n**${client.config.prefix}add # username1, username2, etc**`)
-		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));;
+		return message.reply(badEmbed);
 	};
 
 	// if no usernames present, error!
@@ -58,7 +58,7 @@ exports.run = async (client, message, args, groupID) => {
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`Please provide the ROBLOX username that you want to add ${client.config.experience_name} to\n\n**${client.config.prefix}add # username1, username2, etc**`)
-		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));;
+		return message.reply(badEmbed);
 	};
 
 	// collect usernames into an array
@@ -72,10 +72,9 @@ exports.run = async (client, message, args, groupID) => {
 
 	// tell user that we're still working on command..
 	var workinEmbed = new Discord.MessageEmbed()
-		.setImage("https://media.tenor.com/images/334cf1e2aa89a90a274f5a4040d1a6ec/tenor.gif")
 		.setDescription(`Working on updating ${userArray.length} user(s)...`)
 
-	await message.channel.send(workinEmbed).then(message => message.delete({ timeout: 4000, reason: "delete workin message" }));
+	await message.channel.send(workinEmbed).then(message => message.delete({ timeout: 4000, reason: "delete working message" }));
 
 
 	// all roles
@@ -206,10 +205,9 @@ exports.run = async (client, message, args, groupID) => {
 						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: next_rolesetID });
 						var promotionEmbed = new Discord.MessageEmbed()
 							.setColor(0x21ff7a)
-							.setImage("https://media.giphy.com/media/ehhuGD0nByYxO/giphy.gif")
 							.setDescription(`**:confetti_ball: \`${rblx_username}\` has been promoted to \`${next_rolesetName}\`! :confetti_ball:**`)
 
-						await message.channel.send(promotionEmbed)
+						await message.channel.send(promotionEmbed);
 
 					}else{
 						flag = false;
