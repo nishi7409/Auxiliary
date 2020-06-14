@@ -9,6 +9,7 @@ exports.run = async (client, message, args) => {
 		.setImage("https://media.giphy.com/media/h2DkZTSBJHz6E/giphy.gif")
 		.setTitle(`**Bot Owner: Commands**`)
 		.addField(`\`${client.config.prefix}restart\``, `Restarts the bot`)
+		.addField(`\`${client.config.prefix}list\``, `Whitelists user to use bot in their server`)
 
 	// owner cmds
 	var serverOwnedEmbed = new Discord.MessageEmbed()
