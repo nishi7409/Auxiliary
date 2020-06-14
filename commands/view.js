@@ -49,7 +49,7 @@ exports.run = async (client, message, args, groupID) => {
   
   if (!args[1]) {
 
-   // fetch Roblox Account instead via Rover database
+   // fetch roblox account instead via Rover database
    await axios
     .get(`https://verify.eryn.io/api/user/` + message.author.id)
     .then(function (response) {
