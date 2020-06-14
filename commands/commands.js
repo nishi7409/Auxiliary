@@ -3,29 +3,12 @@ const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
 
-	// var mainPage = new Discord.MessageEmbed()
-	// 	.setColor(0xFF8C00)
-	// 	.setTitle(`**Commands - Menu**`)
-	// 	.setDescription(`Click on the reactions below and I'll refresh this embed with the proper information!\n\n**:construction_worker: 🡒 Guild Owner\n:man_pilot: 🡒 Officer\n:globe_with_meridians: 🡒 Global\n:spy: 🡒 Staff**`)
-
-	// await message.channel.send(mainPage)
-	// 	.then(() => message.react(`👷`))
-	// 	.then(() => message.react(`👨‍✈️`))
-	// 	.then(() => message.react(`🌐`))
-	// 	.then(() => message.react(`🕵️`))
-	// 	.catch(() => console.log(`Couldn't react for one of the emojis [commands.js]`));
-
-
 	// bot commander cmds
 	var ownerEmbed = new Discord.MessageEmbed()
 		.setColor(0xff8c00)
 		.setImage("https://media.giphy.com/media/h2DkZTSBJHz6E/giphy.gif")
 		.setTitle(`**Bot Owner: Commands**`)
 		.addField(`\`${client.config.prefix}restart\``, `Restarts the bot`)
-		.addField(
-		`\`${client.config.prefix}list <@mention>\``,
-		`Whitelists a user to the database`
-		)
 
 	// owner cmds
 	var serverOwnedEmbed = new Discord.MessageEmbed()
@@ -54,7 +37,7 @@ exports.run = async (client, message, args) => {
 		.addField(`\`${client.config.prefix}ranks\``, `View the XP requirements for all ranks found in the binded group`)
 
 	if (message.author.id === client.config.owner_id){
-		await message.channel.send(ownerEmbed)
+		await message.author.send(ownerEmbed)
 	}
 
 	await message.author.send(serverOwnedEmbed)
