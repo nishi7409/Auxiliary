@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.info = {
-    name: 'restart',
+    names: ["restart"],
     usage: 'restart',
     description: "Restart the bot"
 };

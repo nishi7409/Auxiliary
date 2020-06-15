@@ -229,7 +229,7 @@ exports.run = async (client, message, args, groupID) => {
 };
 
 exports.info = {
-	name: 'remove',
+	names: ["remove", "deduct"],
 	usage: 'remove <#> <rblx_username>',
 	description: "Remove xp from user's profile"
 };

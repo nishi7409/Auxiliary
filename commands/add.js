@@ -225,7 +225,7 @@ exports.run = async (client, message, args, groupID) => {
 };
 
 exports.info = {
-    name: 'add',
+    names: ["add"],
     usage: 'add <#> <rblx_username>',
     description: "Add xp to user's profile"
 };

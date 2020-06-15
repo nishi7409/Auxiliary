@@ -61,12 +61,12 @@ exports.run = async (client, message, args) => {
         .setTitle(`__Top 5 Users__`)
         .setDescription(`${leaderboard_description}`)
         
-    return message.reply(leaderboardEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
+    return message.reply(leaderboardEmbed);
 
 };
 
 exports.info = {
-  name: "leaderboard",
+  names: ["leaderboard", "lb"],
   usage: "leaderboard",
   description: "Display the XP leaderboard for the group",
 };

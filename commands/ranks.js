@@ -30,14 +30,14 @@ exports.run = async (client, message, args, groupID) => {
   }
 
 
-  return message.reply(ranksEmbed).then(message => message.delete({timeout: 15000, reason: "delete"}));
+  return message.reply(ranksEmbed)
 
 
 
 };
 
 exports.info = {
-  name: "ranks",
+  names: ["ranks"],
   usage: "ranks",
   description: "Grabs rank-xp information from the database",
 };
