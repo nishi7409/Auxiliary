@@ -266,7 +266,7 @@ exports.run = async (client, message, args, groupID) => {
 };
 
 exports.info = {
-  name: "view",
+  names: ["view"],
   usage: "view <rblx_username>",
   description: "Grabs information about the user",
 };

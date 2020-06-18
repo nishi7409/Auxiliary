@@ -148,7 +148,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.info = {
-    name: 'verify',
+    names: ["verify"],
     usage: 'verify <rblx_username>',
     description: "Link a user's Discord account with their ROBLOX account"
 };

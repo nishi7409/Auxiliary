@@ -212,7 +212,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.info = {
-    name: 'bind',
+    names: ["bind"],
     usage: 'bind <#groupID>',
     description: "Binds guild with a group"
 };

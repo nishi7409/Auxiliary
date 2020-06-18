@@ -30,10 +30,6 @@ async function rblx_login(){
 }
 rblx_login();
 
-
-//var newCookie = rblxFunctions.refreshCookie(config.rblx_cookie)
-//console.log(newCookie)
-
 // Events to be loaded in (message, memebrAdd, etc)
 fs.readdir("./events/", (err, files) => {
   files.forEach(file => {
@@ -51,8 +47,10 @@ fs.readdir("./commands/", (err, files) => {
   files.forEach(file => {
     if (!file.endsWith(".js")) return;
     let props = require(`./commands/${file}`);
+    for (var e=0; e<props.info.names.length; e++) {
+      client.commands.set(props.info.names[e], props);
+    }
     let commandName = file.split(".")[0];
-    client.commands.set(commandName, props);
     console.log(`Loaded command: ${commandName}`)
   });
 });
@@ -63,9 +61,11 @@ client.login(config.bot_token);
 // Initiate Cookie Refresh checking
 cron.schedule('* */1 * * *', () => {
   if (loggedIn == true) {
+    loggedIn = false
     rblxFunctions.refreshCookie().then(function(newCookie) {
       config.rblx_cookie = newCookie
-      console.log("Cookie refreshed and validated.")
+      rblx_login();
+      console.log("Cookie refreshed, validated and relogged in.")
     })
   }
 });

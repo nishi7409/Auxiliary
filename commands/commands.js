@@ -6,7 +6,6 @@ exports.run = async (client, message, args) => {
 	// bot commander cmds
 	var ownerEmbed = new Discord.MessageEmbed()
 		.setColor(0xff8c00)
-		.setImage("https://media.giphy.com/media/h2DkZTSBJHz6E/giphy.gif")
 		.setTitle(`**Bot Owner: Commands**`)
 		.addField(`\`${client.config.prefix}restart\``, `Restarts the bot`)
 		.addField(`\`${client.config.prefix}list\``, `Whitelists user to use bot in their server`)
@@ -30,7 +29,7 @@ exports.run = async (client, message, args) => {
 	var globalEmbed = new Discord.MessageEmbed()
 		.setColor(0x21ff7a)
 		.setTitle(`**Global: Commands**`)
-		.addField(`\`${client.config.prefix}help\``, `Pulls up information about the bot and sends a link to the repository over direct messages`)
+		.addField(`\`${client.config.prefix}information\``, `Pulls up information about the bot and sends a link to the repository over direct messages`)
 		.addField(`\`${client.config.prefix}commands\``, `Displays all of the commands`)
 		.addField(`\`${client.config.prefix}invite\``, `Displays a link for users to invite the bot into their servers`)
 		.addField(`\`${client.config.prefix}verify rblx_username\``, `Verifies your ROBLOX account (rblx_username) with your Discord account--simply makes sure you're not a robot`)
@@ -41,14 +40,13 @@ exports.run = async (client, message, args) => {
 		await message.author.send(ownerEmbed)
 	}
 
-	await message.author.send(serverOwnedEmbed)
-	await message.author.send(officerEmbed);
+	await message.channel.send(officerEmbed);
 	return message.author.send(globalEmbed);
 
 };
 
 exports.info = {
-    name: 'help',
+    names: ["help", "commands", "cmds"],
     usage: 'help',
     description: 'Statistical information'
 };

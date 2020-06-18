@@ -298,7 +298,7 @@ exports.run = async (client, message, args, groupID) => {
 };
 
 exports.info = {
-    name: 'set',
+    names: ["set"],
     usage: 'set <#> <rblx_username>',
     description: "Set xp to user's profile"
 };
