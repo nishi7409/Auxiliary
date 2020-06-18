@@ -43,7 +43,7 @@ exports.run = async (client, message, args) => {
 };
 
 exports.info = {
-	names: ['information'],
+	names: ['information', 'info'],
     usage: 'information',
     description: 'Important information'
 };
