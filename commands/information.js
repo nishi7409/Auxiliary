@@ -23,7 +23,7 @@ exports.run = async (client, message, args) => {
 		.addField(`Key Features`, `**:exclamation: Opensourced & Easy Setup :exclamation:**\n:arrow_right: Automated Promotions\n:arrow_right: \
 			Experience System\n:arrow_right: Verification\n:arrow_right: \
 			Many more...`)
-		.addField(`Slots Open`, `There are only **${100-current_number}** out of the 100 possible slots open.\nIf you'd like a slot, [join this server and ping a staff member!](https://www.discord.gg/fHpfmy5)`)
+		.addField(`Slots Open`, `There are only **${100 - current_number}** out of the 100 possible slots open.\nIf you'd like a slot, [join this server and ping a staff member!](https://www.discord.gg/7PYHqEP)`)
 		.addField(`Fee ($?)`, `There are no fees and there never will be any!\nWe are always open to donations and service reviews though. :smiley:`)
 		.addField(`Supporting Servers`, `${client.guilds.cache.size}`, true)
 		.addField(`Supporting Users`, `${client.users.cache.size}`, true)
@@ -35,7 +35,7 @@ exports.run = async (client, message, args) => {
 	var secondEmbed = new Discord.MessageEmbed()
 		.setColor(0xf54242)
 		.setTitle(`__**Support**__`)
-		.setDescription(`[If you need any help, please join this server.](https://www.discord.gg/fHpfmy5)`)
+		.setDescription(`[If you need any help, please join this server.](https://www.discord.gg/7PYHqEP)`)
 	await message.channel.send(secondEmbed)
 
 

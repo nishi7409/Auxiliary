@@ -30,10 +30,6 @@ async function rblx_login(){
 }
 rblx_login();
 
-
-//var newCookie = rblxFunctions.refreshCookie(config.rblx_cookie)
-//console.log(newCookie)
-
 // Events to be loaded in (message, memebrAdd, etc)
 fs.readdir("./events/", (err, files) => {
   files.forEach(file => {
