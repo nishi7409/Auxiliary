@@ -16,7 +16,7 @@ nothing is expected in return of our services.
 
 ### Support Server
 If you have any questions or concerns, please feel free to join the support server where a member of the staff team can assist you.
-Link - https://discord.gg/fHpfmy5
+Link - https://discord.gg/7PYHqEP
 
 
 ### Installation

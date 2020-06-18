@@ -37,11 +37,6 @@ exports.run = async (client, message, args) => {
 		return message.channel.send(`Sorry ${message.author}, but this guild hasn't been binded yet--so essentially, you could say you've *successfully* unbinded this guild from a group...`).then(message => message.delete({timeout: 5000, reason: "delete"}));
 	}
 
-	// check if user is whitelisted
-	// check if user is verified
-	// backs up all data, returns it as a csv/json file both in the guild the owner is in AND auxillary's server
-	// deletes all data from database
-
 };
 
 exports.info = {

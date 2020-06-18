@@ -221,7 +221,7 @@ exports.run = async (client, message, args, groupID) => {
 		}
 	}
 
-	return message.channel.send(`Updated everyone's profile!`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+	return message.channel.send(`Updated everyone's profile!`)
 };
 
 exports.info = {
