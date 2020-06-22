@@ -23,10 +23,15 @@ admin.initializeApp({
   databaseURL: `${config.firebase_url}`
 });
 
-async function rblx_login(){
-  await rblxFunctions.setCookie(config.rblx_cookie)
-  loggedIn = true
-  console.log("logged in");
+function rblx_login(){
+  rblxFunctions.setCookie(config.rblx_cookie).then(function() {
+    loggedIn = true
+    console.log("logged in");
+  })
+  .catch(function(error) {
+    console.log("There was an error when attempting to log in. " + error)
+  })
+  
 }
 rblx_login();
 
@@ -59,7 +64,7 @@ fs.readdir("./commands/", (err, files) => {
 client.login(config.bot_token);
 
 // Initiate Cookie Refresh checking
-cron.schedule('* */1 * * *', () => {
+cron.schedule('* 1 * * *', () => {
   if (loggedIn == true) {
     loggedIn = false
     rblxFunctions.refreshCookie().then(function(newCookie) {

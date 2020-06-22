@@ -59,7 +59,6 @@ exports.run = async (client, message, args) => {
 
 		var verifyEmbed = new Discord.MessageEmbed()
 			.setColor(0xff8c00)
-			.setImage("https://media.giphy.com/media/BBzeJCZ5FJ7pe/giphy.gif")
 			.setTitle(`**Verification - Pending**`)
 			.setDescription(
 				`**Pending verification for ${rblx_username}**\n\nPlease navigate to [your feed](https://www.roblox.com/feeds/) and paste in the following code:\`\`\`${verifyCode}\`\`\`\nWhen you're ready to advance to the next step, chat **\`done\`**!`
@@ -105,7 +104,6 @@ exports.run = async (client, message, args) => {
 
 			var doneEmbed = new Discord.MessageEmbed()
 				.setColor(0x21ff7a)
-				.setImage("https://media.giphy.com/media/Pm9k9S7BO9o1giCcya/giphy.gif")
 				.setTitle("**Verification - Successful**")
 				.setDescription(
 				`Hey **${rblx_username}**!\nI've stored your information into my database, thanks for verifying yourself! :thumbsup:`
@@ -137,7 +135,6 @@ exports.run = async (client, message, args) => {
 		// embed creator
 		var doneEmbed = new Discord.MessageEmbed()
 			.setColor(0x21ff7a)
-			.setImage("https://media.giphy.com/media/TdfyKrN7HGTIY/giphy.gif")
 			.setTitle("**Verification - Successful**")
 			.addField(`Username`, `**\`${rblx_username}\`**`, true)
 			.addField(`ID`, `**\`${rblx_id}\`**`, true)

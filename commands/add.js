@@ -23,27 +23,27 @@ exports.run = async (client, message, args, groupID) => {
 	var flag = true;
 
 	// make sure officer is verified with us!
-	await axios.get(`${client.config.firebase_url}/verified_users/${message.author.id}.json`)
-		.then(function (response) {
+	//await axios.get(`${client.config.firebase_url}/verified_users/${message.author.id}.json`)
+	//	.then(function (response) {
 			// if null - user isn't verified
-			if (response.data == null){
-				flag = false;
-			}else{
+	//		if (response.data == null){
+	//			flag = false;
+	//		}else{
 				// user is verified, get id
-				officer_rblx_id = response.data.rblx_id
-			}
-		}).catch(function (error) {
+	//			officer_rblx_id = response.data.rblx_id
+	//		}
+	//	}).catch(function (error) {
 			// error, shouldn't happen tbh
-			console.log(`Error - ${error} (add.js)`)
-		})
+	//		console.log(`Error - ${error} (add.js)`)
+	//	})
 
 	// user isn't verified
-	if (flag == false){
-		var badEmbed = new Discord.MessageEmbed()
-			.setColor(0xf54242)
-			.setDescription(`You must verify yourself before you can run the **add** command!`)
-		return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
-	}
+	//if (flag == false){
+	//	var badEmbed = new Discord.MessageEmbed()
+	//		.setColor(0xf54242)
+	//		.setDescription(`You must verify yourself before you can run the **add** command!`)
+	//	return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
+//	}
 	
 	// make sure number is a number and is between the specified numberss
 	if (!args[1] || isNaN(Number(args[1])) || Number(args[1]) < 1 || Number(args[1]) > client.config.max_experiencePoints){
@@ -90,6 +90,8 @@ exports.run = async (client, message, args, groupID) => {
 		var rblx_username = userArray[i].trim();
 		var rblx_id;
 		var flag = false;
+		var blacklisted = false;
+
 			// grab id if possible
 		await axios.get(`https://api.roblox.com/users/get-by-username?username=${rblx_username}`)
 			.then(function (response) {
@@ -112,6 +114,17 @@ exports.run = async (client, message, args, groupID) => {
 			continue;
 		};
 	
+		//checks if a user is blacklisted. Cannot give blacklisted individuals experience now.
+		await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/blacklist/${rblx_id}.json`)
+			.then(function (response) {
+				if (response.data != null){
+					blacklisted = true
+					var badEmbed = new Discord.MessageEmbed()
+					.setColor(0xf54242)
+					.setDescription(`User **${rblx_username}** is blacklisted!`)
+					return(message.channel.send(badEmbed));
+				}
+			})
 		// get total points so far from profile
 		var current_points;
 
@@ -128,7 +141,7 @@ exports.run = async (client, message, args, groupID) => {
 		// new total points added together
 		var new_total_points = current_points + addPoints;
 	
-		if (flag){
+		if (flag && blacklisted != true){
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
 			  xp: Number(new_total_points)
 			});
@@ -139,7 +152,7 @@ exports.run = async (client, message, args, groupID) => {
 				.setDescription(`Created ${rblx_username}'s profile`)
 			await message.channel.send(doneEmbed)
 
-		}else{
+		}else if (blacklisted != true){
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
 			  xp: Number(new_total_points)
 			});
@@ -191,7 +204,7 @@ exports.run = async (client, message, args, groupID) => {
 				}
 			}
 
-			if (next_rolesetID >= 1) {
+			if (next_rolesetID >= 1 && blacklisted != true) {
 				var nextRank_xp;
 
 				// user is not owner or guest
@@ -200,7 +213,7 @@ exports.run = async (client, message, args, groupID) => {
 						nextRank_xp = response.data.xp
 					});
 
-				if (nextRank_xp !== -1) {
+				if (nextRank_xp !== -1 && blacklisted != true) {
 					if (new_total_points >= nextRank_xp) {
 						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: next_rolesetID });
 						var promotionEmbed = new Discord.MessageEmbed()

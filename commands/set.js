@@ -11,9 +11,11 @@ exports.run = async (client, message, args, groupID) => {
 	// command can only be ran in guild text channels
 	if (message.channel.type === "dm") return message.channel.send(`That command can't be used through direct messages!`)
 
-	// only the guild owner can run this command
-	if (message.author.id !== message.guild.owner.id) return message.channel.send(`Sorry ${message.authro}, but only the guild owner can run that command`).then(message => message.delete({timeout: 5000, reason: "delete"}));
-
+	// only your highest approved users at an elevated rank can run this (high_command_role
+	if (!message.member.roles.cache.some(role => role.name === `${client.config.config.high_command_role}`)) {
+		return message.channel.send(`Sorry ${message.author}, but only users with the **${client.config.high_command_role}** role can run that command!`);
+	};
+	
 	// officer id
 	var officer_rblx_id;
 	
@@ -32,7 +34,7 @@ exports.run = async (client, message, args, groupID) => {
 			}
 		}).catch(function (error) {
 			// error, shouldn't happen tbh
-			console.log(`Error - ${error} (add.js)`)
+			console.log(`Error - ${error} (set.js)`)
 		})
 
 	// user isn't verified

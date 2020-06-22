@@ -91,11 +91,8 @@ exports.run = async (client, message, args, groupID) => {
       )
     return message.reply(infoEmbed)
   } else {
-    await message.channel
-      .send(`Fetching data...`)
-      .then((message) =>
-        message.delete({ timeout: 5000, reason: "general delete" })
-      );
+    const sentMessage = await message.channel.send(`Fetching data...`)
+      
 
     // get data about user
     var current_xp = 0;
@@ -152,9 +149,7 @@ exports.run = async (client, message, args, groupID) => {
 
     // error, why?  bc stupid error!
     if (error == true) {
-      return message.channel.send(
-        `This error should **never** appear.  Please contact a staff member @ https://discord.gg/7PYHqEP ASAP (view.js)`
-      );
+      return sentMessage.edit("", `This error should **never** appear.  Please contact a staff member @ https://discord.gg/7PYHqEP ASAP (view.js)`)
     }
 
     // all roles
@@ -261,7 +256,7 @@ exports.run = async (client, message, args, groupID) => {
       .setThumbnail(mugShot);
 
     // return embed
-    return message.channel.send(infoEmbed)
+    return sentMessage.edit("", infoEmbed)
   }
 };
 
