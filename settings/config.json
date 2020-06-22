@@ -8,6 +8,7 @@
 	"firebase_url": "https://auxiliary-f933f.firebaseio.com",
 
 	"officer_role": "Officer",
+	"high_command_role": "High Command",
 
 	"experience_name": "XP",
 	"max_experiencePoints": 5
