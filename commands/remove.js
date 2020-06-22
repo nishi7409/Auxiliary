@@ -72,7 +72,6 @@ exports.run = async (client, message, args, groupID) => {
 
 	// tell user that we're still working on command..
 	var workinEmbed = new Discord.MessageEmbed()
-		.setImage("https://media.tenor.com/images/334cf1e2aa89a90a274f5a4040d1a6ec/tenor.gif")
 		.setDescription(`Working on updating ${userArray.length} user(s)...`)
 
 	await message.channel.send(workinEmbed).then(message => message.delete({timeout: 4000, reason: "delete workin message"}));
@@ -208,7 +207,6 @@ exports.run = async (client, message, args, groupID) => {
 						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: previous_rolesetID });
 						var promotionEmbed = new Discord.MessageEmbed()
 							.setColor(0xf54242)
-							.setImage("https://media.giphy.com/media/qQdL532ZANbjy/giphy.gif")
 							.setDescription(`**:confetti_ball: \`${rblx_username}\` has been demoted to \`${previous_rolesetName}\`! :confetti_ball:**`)
 
 						await message.channel.send(promotionEmbed).then(message => message.delete({ timeout: 5000, reason: "delete annoying promotion image embed" }));

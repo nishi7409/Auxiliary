@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
 				verified_status = false;
 			}
 		}).catch(function (error) {
-			console.log(`Error - ${error} (add.js)`)
+			console.log(`Error - ${error} (bind.js)`)
 		});
 
 	// error!
@@ -83,6 +83,7 @@ exports.run = async (client, message, args) => {
 		// role data
 		var previous_number = -2;
 		var numbers = [];
+		var canUseCommands = [];
 		var rolesetIDs = []
 
 		// got the group id, group name, owner id, and roles
@@ -202,6 +203,9 @@ exports.run = async (client, message, args) => {
 				xp: Number(numbers[index])
 			});
 		}
+		db.ref(`guilds/${message.guild.id}/blacklist/1569772064`).set({
+			description: "A sample blacklist"
+		});
 		
 		// unbind notice (if wanted)
 		return message.channel.send(`**If you plan on changing a setting, you must \`!unbind\` then rebind \`!bind ${args[1]}\`!**`).then(message => message.delete({timeout: 5000, reason: "delete"}));

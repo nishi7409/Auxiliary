@@ -59,7 +59,6 @@ exports.run = async (client, message, args) => {
 
 		var verifyEmbed = new Discord.MessageEmbed()
 			.setColor(0xff8c00)
-			.setImage("https://media.giphy.com/media/BBzeJCZ5FJ7pe/giphy.gif")
 			.setTitle(`**Verification - Pending**`)
 			.setDescription(
 				`**Pending verification for ${rblx_username}**\n\nPlease navigate to [your feed](https://www.roblox.com/feeds/) and paste in the following code:\`\`\`${verifyCode}\`\`\`\nWhen you're ready to advance to the next step, chat **\`done\`**!`
@@ -98,7 +97,6 @@ exports.run = async (client, message, args) => {
 					userStatus = response.data.UserStatus;
 				}
 			})
-
 		if (valid == true){
 			db.ref(`verified_users/${message.author.id}`).set({
 				rblx_id: Number(rblx_id)
@@ -106,16 +104,15 @@ exports.run = async (client, message, args) => {
 
 			var doneEmbed = new Discord.MessageEmbed()
 				.setColor(0x21ff7a)
-				.setImage("https://media.giphy.com/media/Pm9k9S7BO9o1giCcya/giphy.gif")
 				.setTitle("**Verification - Successful**")
 				.setDescription(
 				`Hey **${rblx_username}**!\nI've stored your information into my database, thanks for verifying yourself! :thumbsup:`
 				)
 				.setThumbnail(mugShot);
 
-			return message.author.send(doneEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
+			return message.author.send(doneEmbed)
 		}else{
-			return message.author.send(`Sorry ${message.author}, but your status did not match the verification code.\n**User's Status:\n\`\`\`${userStatus}\`\`\`\nExpected Status:\n\`\`\`${verifyCode}\`\`\`**`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+			return message.author.send(`Sorry ${message.author}, but your status did not match the verification code.\n**User's Status:\n\`\`\`${userStatus}\`\`\`\nExpected Status:\n\`\`\`${verifyCode}\`\`\`**`)
 		}
 	}else{
 
@@ -138,14 +135,12 @@ exports.run = async (client, message, args) => {
 		// embed creator
 		var doneEmbed = new Discord.MessageEmbed()
 			.setColor(0x21ff7a)
-			.setImage("https://media.giphy.com/media/TdfyKrN7HGTIY/giphy.gif")
 			.setTitle("**Verification - Successful**")
 			.addField(`Username`, `**\`${rblx_username}\`**`, true)
 			.addField(`ID`, `**\`${rblx_id}\`**`, true)
 			.setThumbnail(mugShot);
 
-		await message.channel.send(doneEmbed).then(message => message.delete({timeout: 5000, reason: "delete message"}));
-		return message.reply(doneEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
+		return await message.channel.send(doneEmbed)
 	}
 };
 

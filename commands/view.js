@@ -49,7 +49,7 @@ exports.run = async (client, message, args, groupID) => {
   
   if (!args[1]) {
 
-   // fetch Roblox Account instead via Rover database
+   // fetch roblox account instead via Rover database
    await axios
     .get(`https://verify.eryn.io/api/user/` + message.author.id)
     .then(function (response) {
@@ -84,13 +84,15 @@ exports.run = async (client, message, args, groupID) => {
 
   // does user exist?
   if (flag) {
-    return message.channel.send(`User **${args[1]}** doesn't exist!`);
+    var infoEmbed = new Discord.MessageEmbed()
+      .setColor(0xff8c00)
+      .setDescription(
+        `User **${args[1]}** doesn't exist!`
+      )
+    return message.reply(infoEmbed)
   } else {
-    await message.channel
-      .send(`Fetching data...`)
-      .then((message) =>
-        message.delete({ timeout: 5000, reason: "general delete" })
-      );
+    const sentMessage = await message.channel.send(`Fetching data...`)
+      
 
     // get data about user
     var current_xp = 0;
@@ -147,9 +149,7 @@ exports.run = async (client, message, args, groupID) => {
 
     // error, why?  bc stupid error!
     if (error == true) {
-      return message.channel.send(
-        `This error should **never** appear.  Please contact a staff member @ https://discord.gg/fHpfmy5 ASAP (info.js)`
-      );
+      sentMessage.edit("", `This error should **never** appear.  Please contact a staff member @ https://discord.gg/7PYHqEP ASAP (view.js)`)
     }
 
     // all roles
@@ -256,7 +256,7 @@ exports.run = async (client, message, args, groupID) => {
       .setThumbnail(mugShot);
 
     // return embed
-    return message.channel.send(infoEmbed)
+    return sentMessage.edit("", infoEmbed)
   }
 };
 
