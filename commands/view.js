@@ -149,7 +149,7 @@ exports.run = async (client, message, args, groupID) => {
 
     // error, why?  bc stupid error!
     if (error == true) {
-      sentMessage.edit("", `This error should **never** appear.  Please contact a staff member @ https://discord.gg/7PYHqEP ASAP (view.js)`)
+      return sentMessage.edit("", `This error should **never** appear.  Please contact a staff member @ https://discord.gg/7PYHqEP ASAP (view.js)`)
     }
 
     // all roles
