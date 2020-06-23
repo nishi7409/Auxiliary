@@ -22,29 +22,6 @@ exports.run = async (client, message, args, groupID) => {
 	// boolean for user id fetcher checker
 	var flag = true;
 
-	// make sure officer is verified with us!
-	//await axios.get(`${client.config.firebase_url}/verified_users/${message.author.id}.json`)
-	//	.then(function (response) {
-			// if null - user isn't verified
-	//		if (response.data == null){
-	//			flag = false;
-	//		}else{
-				// user is verified, get id
-	//			officer_rblx_id = response.data.rblx_id
-	//		}
-	//	}).catch(function (error) {
-			// error, shouldn't happen tbh
-	//		console.log(`Error - ${error} (add.js)`)
-	//	})
-
-	// user isn't verified
-	//if (flag == false){
-	//	var badEmbed = new Discord.MessageEmbed()
-	//		.setColor(0xf54242)
-	//		.setDescription(`You must verify yourself before you can run the **add** command!`)
-	//	return message.reply(badEmbed).then(message => message.delete({timeout: 5000, reason: "delete"}));
-//	}
-	
 	// make sure number is a number and is between the specified numberss
 	if (!args[1] || isNaN(Number(args[1])) || Number(args[1]) < 1 || Number(args[1]) > client.config.max_experiencePoints){
 		var badEmbed = new Discord.MessageEmbed()
@@ -215,12 +192,19 @@ exports.run = async (client, message, args, groupID) => {
 
 				if (nextRank_xp !== -1 && blacklisted != true) {
 					if (new_total_points >= nextRank_xp) {
-						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: next_rolesetID });
-						var promotionEmbed = new Discord.MessageEmbed()
-							.setColor(0x21ff7a)
-							.setDescription(`**:confetti_ball: \`${rblx_username}\` has been promoted to \`${next_rolesetName}\`! :confetti_ball:**`)
+						rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: next_rolesetID }).then(function () {
+							var promotionEmbed = new Discord.MessageEmbed()
+								.setColor(0x21ff7a)
+								.setDescription(`**:confetti_ball: \`${rblx_username}\` has been promoted to \`${next_rolesetName}\`! :confetti_ball:**`)
 
-						await message.channel.send(promotionEmbed);
+							await message.channel.send(promotionEmbed);
+						}).catch(function (error) {
+							var badEmbed = new Discord.MessageEmbed()
+							.setColor(0xf54242)
+							.setDescription(`**:confetti_ball: \`${rblx_username}\` has earned to \`${next_rolesetName}\`! Unfortunately there is a problem with promoting them. :confetti_ball:**`)
+							console.log(error)
+							await message.channel.send(badEmbed);
+						})
 
 					}else{
 						flag = false;
