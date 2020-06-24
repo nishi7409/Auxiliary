@@ -193,7 +193,7 @@ exports.run = async (client, message, args, groupID) => {
 				}
 			}
 
-			if (previous_rolesetID >= 1) {
+			if (previous_rolesetID >= 1 && client.config.demoteUsers == true) {
 				var previousRank_xp;
 
 				// user is not owner or guest
@@ -204,12 +204,20 @@ exports.run = async (client, message, args, groupID) => {
 
 				if (previousRank_xp !== -1) {
 					if (new_total_points <= previousRank_xp) {
-						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: previous_rolesetID });
-						var promotionEmbed = new Discord.MessageEmbed()
+						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: previous_rolesetID }).then(async function() {
+							var promotionEmbed = new Discord.MessageEmbed()
 							.setColor(0xf54242)
 							.setDescription(`**:confetti_ball: \`${rblx_username}\` has been demoted to \`${previous_rolesetName}\`! :confetti_ball:**`)
+						await message.channel.send(promotionEmbed)
+						flag = false
+						}).catch(async function() {
+							var badEmbed = new Discord.MessageEmbed()
+							.setColor(0xf54242)
+							.setDescription(`**:confetti_ball: \`${rblx_username}\` has needs to be demoted to \`${previous_rolesetName}\`, however there is an error demoting them! :confetti_ball:**`)
 
-						await message.channel.send(promotionEmbed).then(message => message.delete({ timeout: 5000, reason: "delete annoying promotion image embed" }));
+							await message.channel.send(badEmbed);
+							flag = false
+						})
 
 					} else {
 						flag = false;
