@@ -81,7 +81,6 @@ exports.run = async (client, message, args, groupID) => {
 					rblx_id = response.data.Id;
 				}
 			})
-
 		// error message
 		if (flag){
 			var badEmbed = new Discord.MessageEmbed()
@@ -90,7 +89,6 @@ exports.run = async (client, message, args, groupID) => {
 			message.channel.send(badEmbed);
 			continue;
 		};
-	
 		//checks if a user is blacklisted. Cannot give blacklisted individuals experience now.
 		await axios.get(`${client.config.firebase_url}/guilds/${message.guild.id}/blacklist/${rblx_id}.json`)
 			.then(function (response) {
@@ -122,7 +120,6 @@ exports.run = async (client, message, args, groupID) => {
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
 			  xp: Number(new_total_points)
 			});
-
 			// embed message to channel
 			var doneEmbed = new Discord.MessageEmbed()
 				.setColor(0xFF8C00)
@@ -133,7 +130,6 @@ exports.run = async (client, message, args, groupID) => {
 			db.ref(`guilds/${message.guild.id}/users/${rblx_id}`).set({
 			  xp: Number(new_total_points)
 			});
-
 			// embed message to channel
 			var doneEmbed = new Discord.MessageEmbed()
 				.setColor(0x28F6FF)
@@ -144,7 +140,7 @@ exports.run = async (client, message, args, groupID) => {
 
 		var flag = true;
 
-		while (flag){
+		while (flag) {
 			// user's current roleset id
 			var current_rolesetID;
 
@@ -192,27 +188,27 @@ exports.run = async (client, message, args, groupID) => {
 
 				if (nextRank_xp !== -1 && blacklisted != true) {
 					if (new_total_points >= nextRank_xp) {
-						rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: next_rolesetID }).then(function () {
+						await rblxFunctions.setRank({ group: groupID, target: rblx_id, rank: next_rolesetID }).then(async function () {
 							var promotionEmbed = new Discord.MessageEmbed()
 								.setColor(0x21ff7a)
 								.setDescription(`**:confetti_ball: \`${rblx_username}\` has been promoted to \`${next_rolesetName}\`! :confetti_ball:**`)
-
 							await message.channel.send(promotionEmbed);
-						}).catch(function (error) {
+							flag = false;
+						}).catch(async function (error) {
 							var badEmbed = new Discord.MessageEmbed()
 							.setColor(0xf54242)
 							.setDescription(`**:confetti_ball: \`${rblx_username}\` has earned to \`${next_rolesetName}\`! Unfortunately there is a problem with promoting them. :confetti_ball:**`)
 							console.log(error)
 							await message.channel.send(badEmbed);
-						})
-
-					}else{
+							flag = false;
+						});
+					} else {
 						flag = false;
 					}
-				}else{
+				} else {
 					flag = false;
 				}
-			}else{
+			} else {
 				flag = false;
 			}
 		}
