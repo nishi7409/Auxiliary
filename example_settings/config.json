@@ -11,5 +11,7 @@
 	"high_command_role": "High Command",
 
 	"experience_name": "XP",
-	"max_experiencePoints": 5
+	"max_experiencePoints": 5,
+	"demoteUsers": true
+
 }
