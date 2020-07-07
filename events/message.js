@@ -34,23 +34,9 @@ module.exports = async (client, message) => {
 					groupID = response.data.guild_settings.group_id;
 				}
 			})
-
-		// if guild is already setup, then the owner should be verified right??
-		//if (guild_setup == true){
-		//	await axios.get(`${client.config.firebase_url}/whitelisted/${message.guild.owner.id}.json`)
-			//	.then(function (response) {
-					// wow guild was setup *somehow* but owner isn't verified (transfer in ownership)
-			//		if (response.data == null){
-			//			owner_whitelisted = false;
-			//		}else if (response.data.status == false){
-						// guild owner was unwhitelisted for whatever reason
-				//		owner_whitelisted = false;
-			//		}
-			//	})
-		//}
 	}
 
-	// if guild isn't setup and the command isn't to setup ORRRR the owner of the guild isn't whitelisted, ERRORRR
+	// if guild isn't setup and the command isn't to setup OR the owner of the guild isn't whitelisted, ERRORRR
 	if (((guild_setup == false && command !== "bind") || (owner_whitelisted == false)) && (message.author.id !== client.config.owner_id)){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)

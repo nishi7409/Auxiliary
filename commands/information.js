@@ -12,10 +12,9 @@ exports.run = async (client, message, args) => {
 		.addField(`Key Features`, `**:exclamation: Opensourced & Easy Setup :exclamation:**\n:arrow_right: Automated Promotions\n:arrow_right: \
 			Experience System\n:arrow_right: Verification\n:arrow_right: \
 			Many more...`)
-		.addField(`Fee ($?)`, `There are no fees and there never will be any!\nWe are always open to donations and service reviews though. :smiley:`)
-		.addField(`Supporting Servers`, `${client.guilds.cache.size}`, true)
 		.addField(`Supporting Users`, `${client.users.cache.size}`, true)
 		.addField(`Memory Usage`, `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`, true)
+		.addField(`GitHub`, `[Get your copy of the bot here!](https://github.com/nishi7409/Auxiliary)`, true)
 	await message.channel.send(firstEmbed)
 
 
@@ -34,12 +33,6 @@ exports.run = async (client, message, args) => {
 		.setDescription(`**\`!commands\`**`)
 	await message.channel.send(thirdEmbed)
 
-
-	// github
-	message.author.send("The project's source code can be viewed @ https://github.com/nishi7409/Auxiliary")
-		.catch(function (error) {
-			console.log(`Can't direct message user link to GitHub repository :( (help.js)`)
-		})
 };
 
 exports.info = {

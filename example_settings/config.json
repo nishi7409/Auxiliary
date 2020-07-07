@@ -6,6 +6,7 @@
 	"bot_token": "bot token",
 	"rblx_cookie": "rblx cookie",
 	"firebase_url": "https://auxiliary-f933f.firebaseio.com",
+	"bot_picture": "https://t5.rbxcdn.com/09fdcb3be290857df6e46b2fd7edf90e",
 
 	"officer_role": "Officer",
 	"high_command_role": "High Command",

@@ -8,9 +8,6 @@ exports.run = async (client, message, args) => {
 	// restart
 	process.exit();
 
-	// doesn't make sense that it'll hit this line b/c the bot will restart, but ocd
-	return undefined;
-
 };
 
 exports.info = {
