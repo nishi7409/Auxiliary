@@ -149,7 +149,7 @@ exports.run = async (client, message, args, groupID) => {
 
     // error, why?  bc stupid error!
     if (error == true) {
-      return sentMessage.edit("", `This error should **never** appear.  Please contact a staff member @ https://discord.gg/7PYHqEP ASAP (view.js)`)
+      sentMessage.edit("", `This error should **never** appear.  Please contact a staff member @ https://discord.gg/7PYHqEP ASAP (view.js)`)
     }
 
     // all roles
@@ -238,7 +238,7 @@ exports.run = async (client, message, args, groupID) => {
     var progress_bar = progressBar(percentage);
 
     // infinity, so set percentage to 100
-    if (current_xp == 0 || nextRank_xp == 0) {
+    if (current_xp == 0 && nextRank_xp == 0) {
       percentage = 100;
     }
 
