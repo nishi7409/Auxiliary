@@ -1,10 +1,11 @@
 {
   "name": "auxiliary",
-  "version": "0.0.1",
+  "version": "0.1.6",
   "description": "A Discord-ROBLOX integrated service to allow clans and users to achieve their visions",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.19.2",
+    "curlrequest": "^1.0.1",
     "discord.js": "^12.2.0",
     "enmap": "^5.3.1",
     "firebase-admin": "^8.13.0",

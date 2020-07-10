@@ -5,9 +5,27 @@ const admin = require("firebase-admin");
 const rblxFunctions = require("noblox.js");
 const cron = require('node-cron');
 const fs = require("fs");
+var curl = require('curlrequest');
 
 var serviceAccount = require("./settings/serviceAccountKey.json");
 const config = require("./settings/config.json");
+
+// Auto Updater. Will automatically run on application start. If auto update is set to false, no updates will commence.
+curl.request({ url: 'https://raw.githubusercontent.com/nishi7409/Auxiliary/dev/package.json' }, function (err, file) {
+  if (!err) {
+    let requestedPackage = JSON.parse(file)
+    let localPackage = require("./package.json")
+    if (requestedPackage.version != localPackage.version) {
+      if (requestedPackage.version > localPackage.version) {
+        if (config.auto_updates) {
+
+        } else {
+          console.warn("There is an update for auxillary, but you have turned auto updating off. Please manually review these updates.")
+        }
+      }
+    }
+  }
+});
 
 // Setup so that you know if the bot is logged in. Mainly used to keep cookie validation running properly.
 var loggedIn = false
