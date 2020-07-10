@@ -1,0 +1,19 @@
+{
+	"auto_updates": true,
+	
+	"prefix": "!",
+	
+	"owner_id": "171320817597022210",
+
+	"bot_token": "token",
+	"rblx_cookie": "rblx cookie",
+	"firebase_url": "firebaseURL",
+
+	"officer_role": "Not Admin",
+	"high_command_role": "Admin Role",
+
+	"experience_name": "XP",
+	"max_experiencePoints": 5,
+	"demoteUsers": false
+
+}
