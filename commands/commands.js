@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
 		await message.author.send(ownerEmbed)
 	}
 
-	await message.channel.send(officerEmbed);
+	await message.author.send(officerEmbed);
 	return message.author.send(globalEmbed);
 
 };

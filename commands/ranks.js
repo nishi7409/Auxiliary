@@ -30,7 +30,7 @@ exports.run = async (client, message, args, groupID) => {
   }
 
 
-  return message.reply(ranksEmbed)
+  return message.channel.send(ranksEmbed)
 
 
 

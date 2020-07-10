@@ -20,7 +20,7 @@ exports.run = async (client, message, args, groupID) => {
 					await axios.get(`https://api.roblox.com/users/`+key)
 					.then(function (usernameResponse) {
 						if (response.data.errors == null) {
-							blacklistEmbed.addField(usernameResponse.data.Username + " Roblox ID: ("+ usernameResponse.data.Id + ")", "Reason: " + response.data[key].description)
+							blacklistEmbed.addField(usernameResponse.data.Username + " ("+ usernameResponse.data.Id + ")", "Reason: " + response.data[key].description)
 						}
 					});
                 }

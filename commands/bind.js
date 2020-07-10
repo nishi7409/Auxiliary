@@ -78,7 +78,7 @@ exports.run = async (client, message, args) => {
 		}
 
 		// tell owner we're working on things
-		await message.channel.send(`Fetching data...`).then(message => message.delete({timeout: 5000, reason: "general delete"}))
+		await message.channel.send(`**Check your DM's**`)
 
 		// role data
 		var previous_number = -2;
@@ -208,10 +208,10 @@ exports.run = async (client, message, args) => {
 		});
 		
 		// unbind notice (if wanted)
-		return message.channel.send(`**If you plan on changing a setting, you must \`!unbind\` then rebind \`!bind ${args[1]}\`!**`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+		return message.channel.send(`**If you plan on changing a setting, you must \`!unbind\` then rebind \`!bind ${args[1]}\`!**`)
 	}else{
 		// guild is already setup, unbind if owner wants to change something
-		return message.channel.send(`This guild is already setup!\nTo change any of the settings, you'll need to unbind (**!unbind**) then rebind (**!bind groupID**).`).then(message => message.delete({timeout: 5000, reason: "delete"}));
+		return message.channel.send(`This guild is already setup!\nTo change any of the settings, you'll need to unbind (**!unbind**) then rebind (**!bind groupID**).`)
 	}
 };
 

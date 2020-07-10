@@ -20,7 +20,6 @@ module.exports = async (client, message) => {
 	// check if guild is whitelisted based off whether if its in the database, this also determines if the guild has been setup or not
 	var guild_setup = true;
 	var groupID;
-	var owner_whitelisted = true;
 
 	// if cmd is not ran through dms
 	if (message.channel.type !== "dm"){
@@ -37,7 +36,7 @@ module.exports = async (client, message) => {
 	}
 
 	// if guild isn't setup and the command isn't to setup OR the owner of the guild isn't whitelisted, ERRORRR
-	if (((guild_setup == false && command !== "bind") || (owner_whitelisted == false)) && (message.author.id !== client.config.owner_id)){
+	if (guild_setup == false && command !== "bind" && command !== "verify"){
 		var badEmbed = new Discord.MessageEmbed()
 			.setColor(0xf54242)
 			.setDescription(`Sorry ${message.author}, but this guild hasn't been setup yet!\nSetup - \`!bind groupID\`\n\n**[If you have any questions, feel free to click here](https://discord.gg/fHpfmy5)**`)

@@ -64,7 +64,7 @@ fs.readdir("./commands/", (err, files) => {
 client.login(config.bot_token);
 
 // Initiate Cookie Refresh checking
-cron.schedule('* 1 * * *', () => {
+cron.schedule('* * 1 * *', () => {
   if (loggedIn == true) {
     loggedIn = false
     rblxFunctions.refreshCookie().then(function(newCookie) {

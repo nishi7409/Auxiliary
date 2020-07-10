@@ -45,7 +45,7 @@ function progressBar(percentAge) {
 
 exports.run = async (client, message, args, groupID) => {
   // need username
-  var usernameArgument = args[1]
+  var usernameArgument;
   
   if (!args[1]) {
 
@@ -62,6 +62,8 @@ exports.run = async (client, message, args, groupID) => {
            );
       }
     });
+  }else{
+    usernameArgument = args[1];
   }
 
   // variables for username and id

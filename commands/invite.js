@@ -7,7 +7,7 @@ exports.run = async (client, message, args) => {
     .setDescription(
       `**Pick up the source code @ https://github.com/nishi7409/Auxiliary**`
     );
-	return message.reply(inviteEmbed);
+	return message.channel.send(inviteEmbed);
 };
 
 exports.info = {
