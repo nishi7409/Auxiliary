@@ -1,6 +1,6 @@
 {
   "name": "auxiliary",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A Discord-ROBLOX integrated service to allow clans and users to achieve their visions",
   "main": "index.js",
   "dependencies": {
