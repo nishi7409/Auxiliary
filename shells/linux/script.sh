@@ -15,7 +15,7 @@ echo "What is your GitHub username?"
 read githubUsername
 echo "Captured GitHub username: ${githubUsername}"
 
-echo "What is the private repository's name?"
+echo "What is the private repository's name (where your serviceAccountKey.json and config.json file are stored)?"
 read repoName
 echo "Captured repository's name: ${repoName}"
 
