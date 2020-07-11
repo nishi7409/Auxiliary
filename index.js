@@ -6,6 +6,7 @@ const rblxFunctions = require("noblox.js");
 const cron = require('node-cron');
 const fs = require("fs");
 var curl = require('curlrequest');
+const localUpdater = require('./updater.js');
 
 var serviceAccount = require("./settings/serviceAccountKey.json");
 const config = require("./settings/config.json");
@@ -15,13 +16,11 @@ curl.request({ url: 'https://raw.githubusercontent.com/nishi7409/Auxiliary/dev/p
   if (!err) {
     let requestedPackage = JSON.parse(file)
     let localPackage = require("./package.json")
-    if (requestedPackage.version != localPackage.version) {
-      if (requestedPackage.version > localPackage.version) {
-        if (config.auto_updates) {
-
-        } else {
-          console.warn("There is an update for auxillary, but you have turned auto updating off. Please manually review these updates.")
-        }
+    if (requestedPackage.version > localPackage.version) {
+      if (config.auto_updates) {
+        localUpdater.updateApplication()
+      } else {
+        console.warn("There is an update for auxillary, but you have turned auto updating off. Please manually review these updates.")
       }
     }
   }
