@@ -6,7 +6,7 @@
 echo -e "Installing files..."
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt install -y nodejs npm git pbcopy
+sudo apt install -y nodejs npm git
 cd groupBot && cd auxiliary
 
 # now copy the ssh copy (figure this out)
@@ -21,6 +21,7 @@ echo "Captured repository's name: ${repoName}"
 
 git clone https://www.github.com/${githubUsername}/${repoName}
 
+npm install
 npm install pm2
 
 pm2 start index.js
