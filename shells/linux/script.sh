@@ -19,8 +19,6 @@ echo "What is the private repository's name (where your serviceAccountKey.json a
 read repoName
 echo "Captured repository's name: ${repoName}"
 
-cd ../../
-
-git clone https://www.github.com/${githubUsername}/${repoName}/tree/master
+git clone https://www.github.com/${githubUsername}/${repoName}/tree/master ../../settings
 
 npm install
