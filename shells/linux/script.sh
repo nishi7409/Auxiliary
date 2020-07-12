@@ -9,7 +9,7 @@ sudo apt-get -y upgrade
 sudo apt-get -y install
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs 
-sudo apt install -y npm git
+sudo apt install -y nodejs npm git
 cd groupBot && cd auxiliary
 
 # now copy the ssh copy (figure this out)
