@@ -24,6 +24,5 @@ git clone https://www.github.com/${githubUsername}/${repoName}
 cd ../../
 
 npm install
-npm install pm2
 
 pm2 start index.js
