@@ -21,6 +21,8 @@ echo "Captured repository's name: ${repoName}"
 
 git clone https://www.github.com/${githubUsername}/${repoName}
 
+cd ../../
+
 npm install
 npm install pm2
 
