@@ -6,7 +6,8 @@
 echo -e "Installing files..."
 sudo apt-get update
 sudo apt-get -y upgrade
-sudo apt install -y nodejs npm git
+sudo apt-get -y install 
+sudo apt install -y nodejs nodejs-legacy npm git
 cd groupBot && cd auxiliary
 
 # now copy the ssh copy (figure this out)
