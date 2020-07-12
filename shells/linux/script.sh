@@ -31,3 +31,5 @@ cd ../../../ && sudo chmod 777 auxiliary
 cd auxiliary && git clone https://www.github.com/${githubUsername}/${repoName} settings
 
 npm install
+npm install pm2
+pm2 start index.js
