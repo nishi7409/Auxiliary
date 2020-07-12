@@ -13,8 +13,8 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt-get update && sudo apt-get install yarn
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs 
-sudo apt install -y nodejs npm git
-cd groupBot && cd auxiliary
+sudo apt install -y npm git
+cd auxiliary
 
 # now copy the ssh copy (figure this out)
 
