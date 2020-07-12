@@ -19,10 +19,8 @@ echo "What is the private repository's name (where your serviceAccountKey.json a
 read repoName
 echo "Captured repository's name: ${repoName}"
 
-git clone https://www.github.com/${githubUsername}/${repoName}
-
 cd ../../
 
-npm install
+git clone https://www.github.com/${githubUsername}/${repoName}/tree/master
 
-pm2 start index.js
+npm install
