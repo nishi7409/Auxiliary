@@ -19,6 +19,8 @@ echo "What is the private repository's name (where your serviceAccountKey.json a
 read repoName
 echo "Captured repository's name: ${repoName}"
 
-git clone https://www.github.com/${githubUsername}/${repoName}/tree/master ../../settings
+cd ../../../ && sudo chmod 777 auxiliary
+
+cd auxiliary && git clone https://www.github.com/${githubUsername}/${repoName} settings
 
 npm install

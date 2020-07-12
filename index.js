@@ -7,7 +7,7 @@ const cron = require('node-cron');
 const fs = require("fs");
 
 var serviceAccount = require("./settings/serviceAccountKey.json");
-const config = require("./settings/config.json");
+const config = require("./settings/settings/config.json");
 
 // Setup so that you know if the bot is logged in. Mainly used to keep cookie validation running properly.
 var loggedIn = false
