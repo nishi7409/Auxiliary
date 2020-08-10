@@ -6,7 +6,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "discord.js": "^12.2.0",
-    "enmap": "^5.3.2",
+    "enmap": "^5.6.1",
     "firebase-admin": "^9.0.0",
     "noblox.js": "^4.6.5",
     "node-cron": "^2.0.3"
