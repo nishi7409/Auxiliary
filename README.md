@@ -15,11 +15,6 @@ Auxiliary is an open-sourced Discord-ROBLOX integration bot which allows users t
 This service is similar to a paid one; however, this service doesn't charge people and it's completely open-sourced meaning
 users can host this service by themselves--for free.
 
-### Support Server
-If you have any questions or concerns, please feel free to join the support server where a member of the staff team can assist you.
-Link - https://discord.gg/7PYHqEP
-
-
 ### Installation
 [The installation guide can be viewed at this link](https://github.com/nishi7409/Auxiliary/wiki)
 
