@@ -1,5 +1,6 @@
 const axios = require("axios");
 const Discord = require("discord.js");
+const config = require("./settings/config.json");
 
 module.exports = async (client, message) => {
 	// Ignore bots
@@ -34,6 +35,8 @@ module.exports = async (client, message) => {
 				}
 			})
 	}
+	
+	if (message.guild.ownerID !== config.owner_id ) { return undefined; }
 
 	// if guild isn't setup and the command isn't to setup OR the owner of the guild isn't whitelisted, ERRORRR
 	if (guild_setup == false && command !== "bind" && command !== "verify"){
