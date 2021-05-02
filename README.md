@@ -9,7 +9,7 @@
 
 <h1>Inactive Project</h1>
 <p>This project was horribly developed; however, it got the job done for those of us who didn't want to spend a penny on other costly servcies. I learned a lot from this project (ie: customer relationship, JavaScript, databases) and the experiences that I've gained from this venture have helped me with other repositories found on my GitHub profile.</p>
-<br><br>
+<br>
 <b>Some neat statistics include:</b>
 <ul>
   <li>25,000 clones</li>
