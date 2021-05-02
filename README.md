@@ -7,20 +7,12 @@
     <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-blue.svg?style=flat-square" alt="JavaScript Style Guide"/></a>
 </p>
 
-<h1>This project is no longer maintained</h1>
-<hr>
-### About
-Finally, a service that doesn't charge its users for something so essential and simple.
-
-Auxiliary is an open-sourced Discord-ROBLOX integration bot which allows users to manage their clans through their Discord guild.
-This service is similar to a paid one; however, this service doesn't charge people and it's completely open-sourced meaning
-users can host this service by themselves--for free.
-
-### Installation
-[The installation guide can be viewed at this link](https://github.com/nishi7409/Auxiliary/wiki)
-
-
-### License
-```sh
-MIT
-```
+<h1>Inactive Project</h1>
+<p>This project was horribly developed; however, it got the job done for those of us who didn't want to spend a penny on other costly servcies. I learned a lot from this project (ie: customer relationship, JavaScript, databases) and the experiences that I've gained from this venture have helped me with other repositories found on my GitHub profile.</p>
+<br><br>
+<b>Some neat statistics include:</b>
+<ul>
+  <li>25,000 clones</li>
+  <li>55,000 unique visitors</li>
+  <li>$500 in donations</li>
+</ul>
